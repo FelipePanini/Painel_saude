@@ -1,0 +1,79 @@
+/* Tokens de design. Todo valor visual do projeto sai daqui. */
+:root {
+  /* Tipografia */
+  --fonte-texto: system-ui, -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, sans-serif;
+  --fonte-numeros: var(--fonte-texto);
+  --texto-xs: 0.75rem;
+  --texto-sm: 0.875rem;
+  --texto-base: 1rem;
+  --texto-lg: 1.25rem;
+  --texto-xl: 1.75rem;
+  --texto-2xl: 2.5rem;
+  --peso-normal: 400;
+  --peso-medio: 500;
+  --peso-semi: 600;
+  --peso-forte: 700;
+  --altura-linha: 1.5;
+  --altura-linha-titulo: 1.15;
+
+  /* Espaçamento (base 4 px) */
+  --espaco-1: 0.25rem;
+  --espaco-2: 0.5rem;
+  --espaco-3: 0.75rem;
+  --espaco-4: 1rem;
+  --espaco-6: 1.5rem;
+  --espaco-8: 2rem;
+  --espaco-12: 3rem;
+  --espaco-16: 4rem;
+
+  /* Raios */
+  --raio-sm: 6px;
+  --raio-md: 12px;
+  --raio-lg: 20px;
+  --raio-total: 999px;
+
+  /* Movimento: curto e sutil (150 a 300 ms) */
+  --duracao-rapida: 150ms;
+  --duracao-media: 220ms;
+  --duracao-lenta: 300ms;
+  --curva-saida: cubic-bezier(0.2, 0.8, 0.2, 1);
+
+  /* Cores, modo claro */
+  --cor-fundo: #f5f5f7;
+  --cor-superficie: #ffffff;
+  --cor-texto: #1d1d1f;
+  --cor-texto-suave: #5b5b60;
+  --cor-borda: #d9d9de;
+  --cor-destaque: #0a66d8;
+  --cor-destaque-texto: #ffffff;
+  --cor-positivo: #1a7f37;
+  --cor-alerta: #9a6700;
+  --cor-negativo: #c62828;
+  --cor-foco: #0a66d8;
+  --sombra-cartao: 0 1px 2px rgb(0 0 0 / 0.06), 0 4px 16px rgb(0 0 0 / 0.04);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --cor-fundo: #0f0f11;
+    --cor-superficie: #1c1c1f;
+    --cor-texto: #f5f5f7;
+    --cor-texto-suave: #a8a8ae;
+    --cor-borda: #34343a;
+    --cor-destaque: #4c9dff;
+    --cor-destaque-texto: #0f0f11;
+    --cor-positivo: #4ac26b;
+    --cor-alerta: #d4a72c;
+    --cor-negativo: #ff6b6b;
+    --cor-foco: #4c9dff;
+    --sombra-cartao: 0 1px 2px rgb(0 0 0 / 0.4);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duracao-rapida: 0ms;
+    --duracao-media: 0ms;
+    --duracao-lenta: 0ms;
+  }
+}
