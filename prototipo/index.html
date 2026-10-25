@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="robots" content="noindex" />
+    <title>Painel Saúde · protótipo</title>
+    <script type="module" src="./main.ts"></script>
+  </head>
+  <body>
+    <header class="topo">
+      <span class="topo__marca">Painel Saúde</span>
+      <span class="selo">Protótipo com dados fictícios</span>
+    </header>
+
+    <main class="pagina">
+      <div class="seletor" role="tablist" aria-label="Escolha o painel">
+        <button class="seletor__opcao" role="tab" type="button" id="aba-plantonista" aria-controls="painel-plantonista" aria-selected="true">Plantonista</button>
+        <button class="seletor__opcao" role="tab" type="button" id="aba-enfermagem" aria-controls="painel-enfermagem" aria-selected="false" tabindex="-1">Enfermagem</button>
+      </div>
+
+      <section class="painel" id="painel-plantonista" role="tabpanel" aria-labelledby="aba-plantonista"></section>
+      <section class="painel" id="painel-enfermagem" role="tabpanel" aria-labelledby="aba-enfermagem" hidden></section>
+    </main>
+
+    <footer class="rodape">
+      <p>Protótipo para as entrevistas. Os hospitais, a unidade e os números são inventados.</p>
+    </footer>
+  </body>
+</html>

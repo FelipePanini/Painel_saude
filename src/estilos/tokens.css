@@ -44,6 +44,7 @@
   --cor-texto: #1d1d1f;
   --cor-texto-suave: #5b5b60;
   --cor-borda: #d9d9de;
+  --cor-preenchimento: #e8e8ed;
   --cor-destaque: #0a66d8;
   --cor-destaque-texto: #ffffff;
   --cor-positivo: #1a7f37;
@@ -60,6 +61,7 @@
     --cor-texto: #f5f5f7;
     --cor-texto-suave: #a8a8ae;
     --cor-borda: #34343a;
+    --cor-preenchimento: #2a2a2e;
     --cor-destaque: #4c9dff;
     --cor-destaque-texto: #0f0f11;
     --cor-positivo: #4ac26b;

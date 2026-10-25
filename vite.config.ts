@@ -41,6 +41,11 @@ export default defineConfig({
   build: {
     // Evita CSS ou scripts embutidos no HTML, que a CSP bloquearia.
     assetsInlineLimit: 0,
+    rolldownOptions: {
+      // O protótipo das entrevistas entra no build para ser testado com a CSP de produção.
+      // Remover esta entrada (e a pasta prototipo/) antes do lançamento.
+      input: { principal: 'index.html', prototipo: 'prototipo/index.html' },
+    },
   },
   test: {
     include: ['tests/unidade/**/*.test.ts', 'src/**/*.test.ts'],
