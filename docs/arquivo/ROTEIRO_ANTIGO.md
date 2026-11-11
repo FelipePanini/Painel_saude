@@ -1,5 +1,7 @@
 # Roteiro de prompts para o Claude Code
 
+> **Arquivado em 11/11/2026.** Este roteiro foi substituído pelo plano de duas fases: `docs/BRIEFING_FASE_1.md`, `docs/BRIEFING_FASE_2.md` e `docs/PLANO.md`. Ele fica aqui só como histórico. Não siga os prompts abaixo: eles ainda falam de finanças, que saíram do escopo.
+
 Este roteiro constrói o MVP em fases pequenas, na ordem do cronograma do projeto. O `CLAUDE.md` guarda as regras fixas, que o Claude Code lê sozinho em toda sessão. Aqui ficam os prompts, um por fase.
 
 **Como usar**
