@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="robots" content="noindex" />
+    <title>Painel Saúde · galeria</title>
+    <script type="module" src="./main.ts"></script>
+  </head>
+  <body data-direcao="a">
+    <!-- Camada de navegação: raiz única do vidro. O fundo (faixas) e os elementos de vidro são filhos diretos. -->
+    <div class="camada-nav" id="camada-nav">
+      <div class="faixa faixa--topo" aria-hidden="true"></div>
+      <div class="faixa faixa--base" aria-hidden="true"></div>
+
+      <header class="vidro barra-topo" data-config="{}">
+        <span class="marca">Painel Saúde</span>
+        <nav class="barra-topo__nav" aria-label="Seções">
+          <a href="#painel" aria-current="page">Painel</a>
+          <a href="#painel">Dados</a>
+          <a href="#painel">Preferências</a>
+        </nav>
+        <div class="barra-topo__filtros">
+          <label class="seletor">
+            <span class="so-leitor">Mês</span>
+            <select id="filtro-mes"></select>
+          </label>
+          <label class="seletor">
+            <span class="so-leitor">Setor</span>
+            <select id="filtro-setor"></select>
+          </label>
+          <button class="botao-primario barra-topo__adicionar" type="button" data-adicionar>Adicionar dados</button>
+        </div>
+      </header>
+
+      <button class="vidro botao-flutuante" type="button" data-config="{}" data-adicionar>Adicionar dados</button>
+
+      <nav class="vidro barra-abas" aria-label="Seções" data-config="{}">
+        <a href="#painel" aria-current="page" data-icone="painel">Painel</a>
+        <a href="#painel" data-icone="dados">Dados</a>
+        <a href="#painel" data-icone="preferencias">Preferências</a>
+      </nav>
+    </div>
+
+    <main class="pagina">
+      <section class="controles" aria-labelledby="controles-titulo">
+        <p class="controles__etapa">Fase 1 · Etapa 1</p>
+        <h1 class="controles__titulo" id="controles-titulo">Duas direções para o painel</h1>
+        <p class="controles__texto">Os mesmos dados fictícios, em dois desenhos. Troque a direção, o tema e o efeito de vidro para comparar.</p>
+
+        <div class="controles__grupos">
+          <fieldset class="segmentado">
+            <legend>Direção</legend>
+            <label><input type="radio" name="direcao" value="a" checked /><span>A · Sereno</span></label>
+            <label><input type="radio" name="direcao" value="b" /><span>B · Boletim</span></label>
+          </fieldset>
+          <fieldset class="segmentado">
+            <legend>Tema</legend>
+            <label><input type="radio" name="tema" value="sistema" checked /><span>Sistema</span></label>
+            <label><input type="radio" name="tema" value="claro" /><span>Claro</span></label>
+            <label><input type="radio" name="tema" value="escuro" /><span>Escuro</span></label>
+          </fieldset>
+          <fieldset class="segmentado">
+            <legend>Efeito de vidro</legend>
+            <label><input type="radio" name="vidro" value="vidro" checked /><span>Vidro</span></label>
+            <label><input type="radio" name="vidro" value="css" /><span>CSS</span></label>
+            <label><input type="radio" name="vidro" value="solida" /><span>Sólido</span></label>
+          </fieldset>
+        </div>
+        <p class="controles__estado" id="estado-vidro" role="status"></p>
+
+        <div class="comparacao" id="comparacao"></div>
+      </section>
+
+      <section class="painel" id="painel" aria-label="Painel de exemplo"></section>
+
+      <p class="rodape">Dados fictícios. Setores e números são inventados.</p>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,225 @@
+/* Direção A, "Sereno": clara e arejada, azul-petróleo, cantos bem arredondados. */
+
+[data-direcao='a'] {
+  --cor-fundo: #f2f5f8;
+  --cor-superficie: #ffffff;
+  --cor-texto: #10202b;
+  --cor-texto-suave: #4d5f6c;
+  --cor-borda: #dbe3ea;
+  --cor-preenchimento: #e6ecf1;
+  --cor-destaque: #0b6b8a;
+  --cor-destaque-texto: #ffffff;
+  --cor-destaque-suave: #e1f1f6;
+  --cor-positivo: #17713f;
+  --cor-positivo-suave: #e2f3e9;
+  --cor-alerta: #8a5a00;
+  --cor-alerta-suave: #fbf0d9;
+  --cor-foco: #0b6b8a;
+
+  --raio-cartao: 20px;
+  --raio-controle: 12px;
+  --raio-barra: 28px;
+  --raio-abas: 32px;
+  --peso-numero: 600;
+  --sombra-cartao: 0 1px 2px rgb(16 32 43 / 0.05), 0 8px 24px rgb(16 32 43 / 0.05);
+
+  --altura-faixa: 92px;
+  --faixa-topo:
+    radial-gradient(60% 150% at 12% 0%, #b9e2f0 0%, transparent 70%),
+    radial-gradient(50% 130% at 88% 10%, #ccd9ff 0%, transparent 70%),
+    radial-gradient(40% 130% at 50% -20%, #cdefe0 0%, transparent 70%),
+    linear-gradient(to bottom, #e9f1f6 55%, transparent);
+
+  --vidro-fundo: rgb(255 255 255 / 0.62);
+  --vidro-solido: #ffffff;
+  --vidro-borda: rgb(16 32 43 / 0.08);
+  --vidro-brilho: rgb(255 255 255 / 0.8);
+  --vidro-sombra: 0 8px 24px rgb(16 32 43 / 0.1);
+  --vidro-texto: #10202b;
+  --vidro-realce: rgb(16 32 43 / 0.06);
+  --vidro-ativo: rgb(255 255 255 / 0.75);
+  --vidro-destaque: #0b6b8a;
+}
+
+:root[data-tema='escuro'] [data-direcao='a'] {
+  --cor-fundo: #0b1115;
+  --cor-superficie: #141c22;
+  --cor-texto: #eef3f6;
+  --cor-texto-suave: #9fb0bc;
+  --cor-borda: #25313a;
+  --cor-preenchimento: #1b262e;
+  --cor-destaque: #5cc4e2;
+  --cor-destaque-texto: #06222b;
+  --cor-destaque-suave: #12303b;
+  --cor-positivo: #5bd08c;
+  --cor-positivo-suave: #12301f;
+  --cor-alerta: #e6b54a;
+  --cor-alerta-suave: #33270c;
+  --cor-foco: #5cc4e2;
+
+  --sombra-cartao: inset 0 0 0 1px #25313a;
+
+  --faixa-topo:
+    radial-gradient(60% 150% at 12% 0%, #10465a 0%, transparent 70%),
+    radial-gradient(50% 130% at 88% 10%, #1b3472 0%, transparent 70%),
+    radial-gradient(40% 130% at 50% -20%, #114436 0%, transparent 70%),
+    linear-gradient(to bottom, #0e171c 55%, transparent);
+
+  --vidro-fundo: rgb(20 28 34 / 0.6);
+  --vidro-solido: #141c22;
+  --vidro-borda: rgb(255 255 255 / 0.1);
+  --vidro-brilho: rgb(255 255 255 / 0.14);
+  --vidro-sombra: 0 8px 24px rgb(0 0 0 / 0.45);
+  --vidro-texto: #eef3f6;
+  --vidro-realce: rgb(255 255 255 / 0.08);
+  --vidro-ativo: rgb(255 255 255 / 0.14);
+  --vidro-destaque: #5cc4e2;
+}
+
+/* ---------- painel da direção A ---------- */
+
+.painel[data-direcao='a'] .painel__titulo {
+  font-size: clamp(1.75rem, 1.2rem + 2.4vw, 2.5rem);
+  font-weight: var(--peso-forte);
+  letter-spacing: -0.025em;
+}
+
+.painel[data-direcao='a'] .painel__subtitulo {
+  margin-top: var(--espaco-1);
+  color: var(--cor-texto-suave);
+}
+
+.grade-a {
+  display: grid;
+  gap: var(--espaco-4);
+  margin-top: var(--espaco-6);
+}
+
+.grade-a__coluna {
+  display: grid;
+  gap: var(--espaco-4);
+}
+
+@media (min-width: 960px) {
+  .grade-a {
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+  }
+}
+
+.cartao {
+  border-radius: var(--raio-cartao);
+  background: var(--cor-superficie);
+  box-shadow: var(--sombra-cartao);
+}
+
+.cartao__nome {
+  color: var(--cor-texto-suave);
+  font-size: var(--texto-base);
+  font-weight: var(--peso-medio);
+}
+
+.cartao__linha-valor {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0 var(--espaco-2);
+}
+
+.cartao__valor {
+  font-weight: var(--peso-numero);
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+}
+
+.cartao__unidade {
+  color: var(--cor-texto-suave);
+  font-size: var(--texto-sm);
+}
+
+/* O cartão em destaque: número grande e gráfico de 12 meses. */
+.cartao--destaque {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaco-4);
+  padding: var(--espaco-6);
+}
+
+.cartao--destaque .cartao__topo {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--espaco-3) var(--espaco-6);
+}
+
+.cartao--destaque .cartao__valor {
+  margin-top: var(--espaco-1);
+  font-size: clamp(3rem, 2rem + 4vw, 4.5rem);
+}
+
+.cartao--destaque .cartao__estado {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaco-2);
+}
+
+.cartao__grafico {
+  position: relative;
+  flex: 1;
+  min-height: 220px;
+}
+
+/* Os cartões menores: número à esquerda, minigráfico à direita. */
+.cartao--compacto {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(88px, 34%);
+  align-items: center;
+  gap: var(--espaco-4);
+  padding: var(--espaco-4) var(--espaco-6);
+}
+
+.cartao--compacto .cartao__texto {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaco-1);
+}
+
+.cartao--compacto .cartao__valor {
+  font-size: 2rem;
+}
+
+.cartao--compacto .cartao__lado {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.mudancas {
+  margin-top: var(--espaco-4);
+  padding: var(--espaco-6);
+  border-radius: var(--raio-cartao);
+  background: var(--cor-destaque-suave);
+}
+
+.mudancas__titulo {
+  color: var(--cor-destaque);
+  font-size: var(--texto-base);
+  font-weight: var(--peso-semi);
+}
+
+.mudancas__lista {
+  display: grid;
+  gap: var(--espaco-3);
+  margin: var(--espaco-3) 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: 1.125rem;
+  line-height: 1.45;
+}
+
+@media (min-width: 960px) {
+  .mudancas__lista {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--espaco-6);
+  }
+}

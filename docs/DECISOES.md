@@ -2,7 +2,23 @@
 
 Decisões não óbvias, com data. A mais recente fica no topo.
 
-## 24/10/2026: protótipo das entrevistas (Fase 1)
+## 11/11/2026: fase 1, Etapa 1 (plano e direções visuais)
+
+- **Plano novo de duas fases.** Fase 1 (visual, Fable 5.2) e fase 2 (engenharia, Opus 5.5). O roteiro antigo foi para `docs/arquivo/`. O "protótipo das entrevistas" abaixo é do plano antigo.
+- **O vidro de verdade funciona com a CSP atual.** A `@ybouane/liquidglass` 1.0.3 foi testada no build, com a CSP de `public/_headers`, e não gerou nenhuma violação. Não foi preciso mudar a CSP. O único aviso é do driver gráfico do navegador de teste ("GL Driver Message"), que desenha o WebGL por software; o teste ignora só esse aviso.
+- **`.npmrc` com `ignore-scripts=true`.** A biblioteca de vidro traz um `postinstall` (`patch-package`) que só serve para quem a desenvolve e quebra o `npm install`. Com a opção, nenhum pacote roda script na instalação, o que também é mais seguro. O arquivo publicado da biblioteca já vem pronto, então nada se perde.
+- **Valores do vidro (provisórios, até a direção ser escolhida).** Preset "Regular Glass" (os padrões da biblioteca), com três ajustes: `blurAmount: 0.2`, para o texto ficar legível; `shadowOpacity: 0.18`, mais discreta que o padrão de 0,30; e `cornerRadius` igual ao raio de cada barra (28 e 32 px na direção A, 16 e 20 px na B).
+- **O vidro fica sobre faixas de fundo fixas**, e não sobre o conteúdo que rola: uma faixa no topo e, no celular, uma faixa na base, onde o conteúdo some aos poucos. A biblioteca só fotografa as faixas, uma vez. Custa pouco e a rolagem não sofre.
+- **No computador, "Adicionar dados" é um botão sólido dentro da barra de vidro**, e não um botão de vidro flutuante: sem uma faixa de fundo embaixo dele, o vidro não teria o que refratar. No celular ele é um botão de vidro flutuante, sobre a faixa da base.
+- **Uma raiz de vidro só** (`#camada-nav`), com as faixas e os elementos de vidro como filhos diretos. O módulo `src/vidro/vidro.ts` carrega a biblioteca sob demanda, espera as fontes, e cai para a versão CSS sem WebGL ou se o init falhar.
+- **Tema por `data-tema` no `<html>`**, resolvido pelo JavaScript a partir da preferência do sistema ou da escolha da pessoa. Assim as preferências podem oferecer "claro, escuro ou do sistema" sem duplicar os tokens.
+- **Duração das animações lida dos tokens em milissegundos** (`src/componentes/movimento.ts`). O build encurta `0ms` para `0s`, e uma comparação de texto com `'0ms'` deixava o gráfico animar mesmo com "reduzir movimento" ligado. As capturas de tela mostraram o defeito.
+- **Eixo do gráfico com limites e passo em números redondos**, para as marcas baterem com os rótulos (70%, 80%, 90%).
+- **Frase de "setor não lançou os números" só vale para setor que já lançava antes.** Um setor novo não aparece como atrasado nos meses em que ainda não existia. Um teste de unidade pegou esse defeito.
+- **Ícones: Lucide** (licença ISC). **Minigráficos em SVG próprio**, sem biblioteca; o Chart.js fica para os gráficos maiores.
+- **`npm audit` aponta uma falha moderada no `minimatch`**, usado só pelo ESLint (ferramenta de desenvolvimento, não vai para o site). A correção automática rebaixaria o ESLint para a versão 9. Fica para revisar na fase 2.
+
+## 24/10/2026: protótipo das entrevistas (plano antigo)
 
 - **O protótipo entra no build** (`build.rolldownOptions.input` em `vite.config.ts`), em `/prototipo/`. Assim o Playwright o testa com a CSP de produção, e isso já mostrou que o Chart.js funciona sem `unsafe-inline`. Se o site for publicado antes das entrevistas, o link também serve para mostrar à professora. Remover a entrada e a pasta antes do lançamento.
 - **Números e frases calculados a partir dos dados fictícios** (`prototipo/calculos.ts`), com testes que conferem os valores calculados à mão. Assim cartões, frases e gráficos nunca se contradizem quando alguém mexe nos dados.

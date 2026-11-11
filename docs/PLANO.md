@@ -78,9 +78,10 @@ Todas em 390 px e 1280 px, nos modos claro e escuro.
 
 - [x] Briefings salvos em `docs/`, `CLAUDE.md` novo na raiz.
 - [x] Este plano.
-- [ ] Biblioteca de vidro instalada e testada com a CSP atual.
-- [ ] Duas direções visuais do painel, lado a lado na galeria.
-- [ ] **Felipe escolhe a direção.**
+- [x] Biblioteca de vidro instalada e testada com a CSP atual. Funcionou sem mudar a CSP.
+- [x] Contratos de dados: `src/tipos/`, `src/nichos/exemplo.ts`, `src/dados-ficticios/` e `src/fonte-de-dados/`.
+- [x] Duas direções visuais do painel na galeria (`/componentes/`): **A · Sereno** e **B · Boletim**. Capturas em `test-results/direcoes/` depois de rodar `npm run check`.
+- [ ] **Felipe escolhe a direção.** Como ver: `npm run dev` e abrir `http://localhost:5173/componentes/`.
 - [ ] Tokens finais, componentes base, navegação nas três aparências do vidro.
 - [x] Skill `verify` (já existe desde o esqueleto).
 
@@ -100,7 +101,7 @@ Telas restantes, todos os estados, polimento das animações, ajustes da valida�
 
 | Risco | O que faço |
 | --- | --- |
-| **O vidro pode esbarrar na CSP.** A biblioteca fotografa a página montando uma imagem SVG com estilos embutidos. A CSP atual proíbe estilos embutidos. | Testar logo na Etapa 1, com a CSP ligada. Se falhar, a navegação cai sozinha para a versão CSS, e eu trago o problema para o Felipe decidir. Não mudo a CSP sem aprovação. |
+| **O vidro pode esbarrar na CSP.** Resolvido em 11/11: testado no build com a CSP ligada, sem nenhuma violação. | Os testes de navegador continuam rodando com a CSP e falham se aparecer uma violação. |
 | **O vidro custa caro para o computador.** Cada captura da página é lenta. | Barras de vidro sobre uma faixa de fundo fixa, e não sobre o conteúdo que rola. Versão CSS durante a rolagem, se precisar. Uma única raiz de vidro. |
 | **Prazo curto.** A direção visual precisa sair até 13/11 e o protótipo até 18/11. | Etapa 2 começa pelas três telas que serão mostradas às 5 pessoas. O resto fica para a Etapa 3. |
 | **Textos da área sem validação.** Não há SPEC nem amostra da professora. | Marcar tudo com [VALIDAR COM A PROFESSORA] na configuração de exemplo. Nada de fórmula ou termo clínico inventado como se fosse certo. |

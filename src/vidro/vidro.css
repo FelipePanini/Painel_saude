@@ -1,0 +1,40 @@
+/* As três aparências do vidro. O padrão é a versão CSS; <html data-vidro> troca. */
+
+.vidro {
+  background: var(--vidro-fundo);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  backdrop-filter: blur(20px) saturate(180%);
+  box-shadow:
+    inset 0 0 0 1px var(--vidro-borda),
+    inset 0 1px 0 0 var(--vidro-brilho),
+    var(--vidro-sombra);
+  color: var(--vidro-texto);
+}
+
+/* Sólida: superfície opaca com borda visível. */
+:root[data-vidro='solida'] .vidro {
+  background: var(--vidro-solido);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  box-shadow:
+    inset 0 0 0 1px var(--cor-borda),
+    var(--vidro-sombra);
+}
+
+/* Vidro WebGL: a biblioteca desenha o fundo, a borda e a sombra num canvas dentro do elemento. */
+:root[data-vidro='vidro'] .vidro {
+  background: transparent;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  box-shadow: none;
+}
+
+/* Na impressão, sempre a aparência sólida. */
+@media print {
+  .vidro {
+    background: #fff;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    box-shadow: inset 0 0 0 1px #ccc;
+  }
+}

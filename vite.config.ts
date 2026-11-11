@@ -44,7 +44,7 @@ export default defineConfig({
     rolldownOptions: {
       // O protótipo das entrevistas entra no build para ser testado com a CSP de produção.
       // Remover esta entrada (e a pasta prototipo/) antes do lançamento.
-      input: { principal: 'index.html', prototipo: 'prototipo/index.html' },
+      input: { principal: 'index.html', prototipo: 'prototipo/index.html', componentes: 'componentes/index.html' },
     },
   },
   test: {
