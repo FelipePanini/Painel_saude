@@ -1,45 +1,26 @@
-// Galeria da fase 1. Nesta etapa ela mostra as duas direções visuais do painel, lado a lado,
-// para o Felipe escolher uma. Depois da escolha, vira a galeria de componentes.
+// Galeria de componentes da fase 1: todas as peças do sistema de design, com dados fictícios.
+// É por aqui que o Felipe revisa o design e que a fase 2 entende o sistema.
 import '@fontsource/inter/latin-400.css'
 import '@fontsource/inter/latin-500.css'
 import '@fontsource/inter/latin-600.css'
 import '@fontsource/inter/latin-700.css'
 import '../src/estilos/tokens.css'
 import '../src/estilos/base.css'
+import '../src/estilos/componentes.css'
+import '../src/estilos/navegacao.css'
 import '../src/vidro/vidro.css'
 import './galeria.css'
-import './direcao-a.css'
-import './direcao-b.css'
 import type { Chart } from 'chart.js'
-import { AlertTriangle, Check, Database, LayoutDashboard, Minus, Plus, Settings, TrendingDown, TrendingUp, type IconNode } from 'lucide'
-import { el, icone } from '../src/componentes/dom'
-import { graficoTendencia } from '../src/componentes/graficoTendencia'
-import { minigrafico } from '../src/componentes/minigrafico'
-import { contarAte } from '../src/componentes/numero'
+import { Database, Download, LayoutDashboard, Settings, Trash2, Upload } from 'lucide'
+import { aviso, botao, campoTexto, chip, esqueleto, estado, mostrarToast, segmentado, seletor } from '../src/componentes/controles'
+import { el } from '../src/componentes/dom'
+import { cartaoCompacto, cartaoDestaque } from '../src/componentes/indicador'
+import { montarNavegacao } from '../src/componentes/navegacao'
 import { fonteDeDados } from '../src/fonte-de-dados'
-import { arredondarComoATela, capitalizar, formatar } from '../src/formatar'
-import type { Filtros, Indicador, ResumoIndicador } from '../src/tipos/dominio'
-import { aplicarAparencia, fundoMudou, type Aparencia } from '../src/vidro/vidro'
-
-type Direcao = 'a' | 'b'
-type Tema = 'sistema' | 'claro' | 'escuro'
-
-const direcoes: Record<Direcao, { nome: string; descricao: string; raioBarra: number; raioAbas: number }> = {
-  a: {
-    nome: 'A · Sereno',
-    descricao:
-      'Claro e arejado. Azul-petróleo, cantos bem arredondados, um indicador em destaque com o gráfico e os outros ao lado. A navegação é uma cápsula de vidro sobre um fundo suave.',
-    raioBarra: 28,
-    raioAbas: 32,
-  },
-  b: {
-    nome: 'B · Boletim',
-    descricao:
-      'Direto como um relatório. Verde-escuro, cantos mais retos, as frases sobre o que mudou vêm primeiro e os indicadores ficam numa lista, fácil de comparar. A navegação é vidro sobre uma faixa verde.',
-    raioBarra: 16,
-    raioAbas: 20,
-  },
-}
+import { capitalizar, formatar } from '../src/formatar'
+import { aoMudarTema, definirTema, type Tema } from '../src/tema'
+import type { Filtros } from '../src/tipos/dominio'
+import type { Aparencia } from '../src/vidro/vidro'
 
 const parametros = new URLSearchParams(location.search)
 const umDe = <T extends string>(valor: string | null, opcoes: readonly T[], padrao: T) =>
@@ -48,335 +29,310 @@ const umDe = <T extends string>(valor: string | null, opcoes: readonly T[], padr
 const meses = await fonteDeDados.meses()
 const setores = await fonteDeDados.setores()
 
-const estado = {
-  direcao: umDe<Direcao>(parametros.get('direcao'), ['a', 'b'], 'a'),
+const estadoDaPagina = {
   tema: umDe<Tema>(parametros.get('tema'), ['sistema', 'claro', 'escuro'], 'sistema'),
   vidro: umDe<Aparencia>(parametros.get('vidro'), ['vidro', 'css', 'solida'], 'vidro'),
   filtros: { mes: meses[meses.length - 1]!, setorId: 'todos' } as Filtros,
-  /** Na direção A, o indicador que ocupa o cartão grande. */
+  /** O indicador que ocupa o cartão grande. */
   destaqueId: null as string | null,
 }
 
-const camadaNav = document.getElementById('camada-nav')!
-const painel = document.getElementById('painel')!
-const prefereEscuro = window.matchMedia('(prefers-color-scheme: dark)')
-const telaEstreita = window.matchMedia('(max-width: 719px)')
+const secoes = document.getElementById('secoes')!
 let graficoAtual: Chart | null = null
-/** Guarda o último valor mostrado de cada indicador, para o número contar a partir dele. */
-const valoresMostrados = new Map<string, number>()
 
-// ---------- textos derivados dos dados ----------
-
-function textoDaMeta(indicador: Indicador) {
-  if (!indicador.meta) return ''
-  const valor = formatar.indicador(indicador, indicador.meta.valor)
-  return indicador.meta.tipo === 'ate' ? `até ${valor}` : `mínimo de ${valor}`
-}
-
-function variacao(resumo: ResumoIndicador, mesAnterior: string | null): { texto: string; icone: IconNode; tom: 'melhor' | 'pior' | 'neutro' } | null {
-  const { indicador, valor, valorAnterior } = resumo
-  if (valor === null || valorAnterior === null || !mesAnterior) return null
-  const diferenca = arredondarComoATela(indicador, valor) - arredondarComoATela(indicador, valorAnterior)
-  const nomeMes = formatar.mes(mesAnterior)
-  if (Math.abs(diferenca) < 0.05) return { texto: `Igual a ${nomeMes}`, icone: Minus, tom: 'neutro' }
-  const tamanho = Math.abs(diferenca)
-  const quanto =
-    indicador.formato === 'percentual'
-      ? `${formatar.inteiro(tamanho)} ${tamanho === 1 ? 'ponto' : 'pontos'}`
-      : formatar.decimal1(tamanho)
-  const subiu = diferenca > 0
-  const melhorou = indicador.sentido === 'maior-melhor' ? subiu : !subiu
-  return {
-    texto: `${subiu ? 'Subiu' : 'Caiu'} ${quanto} desde ${nomeMes}`,
-    icone: subiu ? TrendingUp : TrendingDown,
-    // Sem meta, não dizemos se a mudança é boa ou ruim.
-    tom: indicador.meta ? (melhorou ? 'melhor' : 'pior') : 'neutro',
-  }
-}
-
-function seloDaMeta(resumo: ResumoIndicador) {
-  if (resumo.situacao === 'sem-meta') return null
-  const dentro = resumo.situacao === 'dentro-da-meta'
+function secao(id: string, titulo: string, descricao: string, ...conteudo: (Node | null)[]) {
   return el(
-    'p',
-    { class: `selo selo--${dentro ? 'ok' : 'atencao'}` },
-    icone(dentro ? Check : AlertTriangle, 16),
-    el('span', { texto: `${dentro ? 'Dentro da meta' : 'Fora da meta'} (${textoDaMeta(resumo.indicador)})` }),
+    'section',
+    { class: 'secao', atributos: { id, 'aria-labelledby': `${id}-titulo` } },
+    el('h2', { class: 'secao__titulo', texto: titulo, atributos: { id: `${id}-titulo` } }),
+    el('p', { class: 'secao__descricao', texto: descricao }),
+    el('div', { class: 'secao__palco' }, ...conteudo),
   )
 }
 
-function linhaDaVariacao(resumo: ResumoIndicador, mesAnterior: string | null) {
-  const v = variacao(resumo, mesAnterior)
-  if (!v) return null
-  return el('p', { class: `variacao variacao--${v.tom}` }, icone(v.icone, 16), el('span', { texto: v.texto }))
-}
+const linha = (...itens: (Node | null)[]) => el('div', { class: 'palco-linha' }, ...itens)
 
-function numero(resumo: ResumoIndicador, classe: string) {
-  const elemento = el('p', { class: `${classe} numero` })
-  if (resumo.valor === null) {
-    elemento.textContent = '—'
-    elemento.setAttribute('aria-label', 'Sem dados neste mês')
-    return elemento
-  }
-  const chave = resumo.indicador.id
-  contarAte(elemento, valoresMostrados.get(chave) ?? null, resumo.valor, (v) => formatar.indicador(resumo.indicador, v))
-  valoresMostrados.set(chave, resumo.valor)
-  return elemento
-}
+// ---------- navegação ----------
 
-function mini(resumo: ResumoIndicador) {
-  const valores = resumo.serie.map((s) => s.valor)
-  if (valores.filter((v) => v !== null).length < 2) return el('p', { class: 'sem-dados', texto: 'Dados insuficientes para o gráfico' })
-  const primeiro = resumo.serie[0]!
-  const ultimo = resumo.serie[resumo.serie.length - 1]!
-  return minigrafico(valores, {
-    meta: resumo.indicador.meta?.valor,
-    descricao: `Tendência de ${resumo.indicador.nome.toLowerCase()} de ${formatar.mes(primeiro.mes)} a ${formatar.mes(ultimo.mes)}`,
-  })
-}
-
-function oQueE(indicador: Indicador) {
-  return el(
-    'details',
-    { class: 'o-que-e' },
-    el('summary', { texto: 'O que é isso?' }),
-    el('p', { texto: indicador.oQueE }),
-    el('p', { class: 'o-que-e__formula', texto: `Como é calculado: ${indicador.formula}` }),
-  )
-}
-
-// ---------- direção A: um indicador em destaque e os outros ao lado ----------
-
-function painelA(resumos: ResumoIndicador[], frases: string[], titulo: string, subtitulo: string, mesAnterior: string | null) {
-  const destaque =
-    resumos.find((r) => r.indicador.id === estado.destaqueId) ?? resumos.find((r) => r.situacao === 'fora-da-meta') ?? resumos[0]!
-  const outros = resumos.filter((r) => r !== destaque)
-
-  const areaDoGrafico = el('div', { class: 'cartao__grafico' })
-  const temSerie = destaque.serie.filter((s) => s.valor !== null).length >= 2
-  const canvas = el('canvas')
-  areaDoGrafico.append(temSerie ? canvas : el('p', { class: 'sem-dados', texto: 'Dados insuficientes para o gráfico' }))
-
-  const cartaoDestaque = el(
-    'article',
-    { class: 'cartao cartao--destaque' },
-    el('div', { class: 'cartao__topo' },
-      el('div', {},
-        el('h3', { class: 'cartao__nome', texto: destaque.indicador.nome }),
-        el('div', { class: 'cartao__linha-valor' }, numero(destaque, 'cartao__valor'), el('p', { class: 'cartao__unidade', texto: destaque.indicador.unidade })),
-      ),
-      el('div', { class: 'cartao__estado' }, seloDaMeta(destaque), linhaDaVariacao(destaque, mesAnterior)),
-    ),
-    areaDoGrafico,
-    oQueE(destaque.indicador),
-  )
-
-  const compactos = outros.map((resumo) => {
-    const ver = el('button', { class: 'botao-texto', texto: 'Ver tendência', atributos: { type: 'button', 'aria-label': `Ver tendência de ${resumo.indicador.nome.toLowerCase()}` } })
-    ver.addEventListener('click', () => {
-      estado.destaqueId = resumo.indicador.id
-      void desenharPainel()
-    })
-    return el(
-      'article',
-      { class: 'cartao cartao--compacto' },
-      el('div', { class: 'cartao__texto' },
-        el('h3', { class: 'cartao__nome', texto: resumo.indicador.nome }),
-        el('div', { class: 'cartao__linha-valor' }, numero(resumo, 'cartao__valor'), el('p', { class: 'cartao__unidade', texto: resumo.indicador.unidade })),
-        seloDaMeta(resumo) ?? linhaDaVariacao(resumo, mesAnterior),
-      ),
-      el('div', { class: 'cartao__lado' }, mini(resumo), ver),
-    )
-  })
-
-  painel.replaceChildren(
-    el('header', { class: 'painel__cabecalho' }, el('h2', { class: 'painel__titulo', texto: titulo }), el('p', { class: 'painel__subtitulo', texto: subtitulo })),
-    el('div', { class: 'grade-a' }, cartaoDestaque, el('div', { class: 'grade-a__coluna' }, ...compactos)),
-    el('section', { class: 'mudancas' },
-      el('h3', { class: 'mudancas__titulo', texto: 'O que mudou' }),
-      frases.length
-        ? el('ul', { class: 'mudancas__lista' }, ...frases.map((f) => el('li', { texto: f })))
-        : el('p', { class: 'sem-dados', texto: 'Nenhuma mudança importante neste mês.' }),
-    ),
-  )
-  if (temSerie) graficoAtual = graficoTendencia(canvas, destaque)
-}
-
-// ---------- direção B: as frases primeiro, os indicadores em lista ----------
-
-function painelB(resumos: ResumoIndicador[], frases: string[], titulo: string, subtitulo: string, mesAnterior: string | null) {
-  const [manchete, ...outras] = frases
-  const linhas = resumos.map((resumo) =>
-    el(
-      'details',
-      { class: 'linha' },
-      el('summary', { class: 'linha__resumo' },
-        el('div', { class: 'linha__nome' }, el('h3', { texto: resumo.indicador.nome }), el('p', { texto: resumo.indicador.unidade })),
-        el('div', { class: 'linha__grafico' }, mini(resumo)),
-        numero(resumo, 'linha__valor'),
-        el('div', { class: 'linha__estado' }, seloDaMeta(resumo), linhaDaVariacao(resumo, mesAnterior)),
-      ),
-      el('div', { class: 'linha__detalhe' },
-        el('p', { texto: resumo.indicador.oQueE }),
-        el('p', { class: 'o-que-e__formula', texto: `Como é calculado: ${resumo.indicador.formula}` }),
-      ),
-    ),
-  )
-
-  painel.replaceChildren(
-    el('header', { class: 'boletim' },
-      el('p', { class: 'boletim__periodo', texto: `${titulo} · ${subtitulo}` }),
-      el('h2', { class: 'boletim__manchete', texto: manchete ?? 'Nenhuma mudança importante neste mês.' }),
-      outras.length ? el('ul', { class: 'boletim__frases' }, ...outras.map((f) => el('li', { texto: f }))) : null,
-    ),
-    el('section', { class: 'lista' },
-      el('div', { class: 'lista__cabecalho' }, el('h3', { texto: 'Indicadores' }), el('p', { texto: 'Toque num indicador para ver o que ele significa.' })),
-      ...linhas,
-    ),
-  )
-}
-
-// ---------- desenho ----------
-
-async function desenharPainel() {
-  graficoAtual?.destroy()
-  graficoAtual = null
-  const { filtros } = estado
-  const [resumos, frases] = await Promise.all([fonteDeDados.resumo(filtros), fonteDeDados.frases(filtros)])
-  const mesAnterior = meses[meses.indexOf(filtros.mes) - 1] ?? null
-  const titulo = capitalizar(formatar.mesComAno(filtros.mes))
-  const setor = filtros.setorId === 'todos' ? 'Todos os setores' : (setores.find((s) => s.id === filtros.setorId)?.nome ?? '')
-  const subtitulo = mesAnterior ? `${setor}, comparado a ${formatar.mes(mesAnterior)}` : setor
-  painel.dataset.direcao = estado.direcao
-  if (estado.direcao === 'a') painelA(resumos, frases, titulo, subtitulo, mesAnterior)
-  else painelB(resumos, frases, titulo, subtitulo, mesAnterior)
-}
-
-function temaEfetivo() {
-  return estado.tema === 'sistema' ? (prefereEscuro.matches ? 'escuro' : 'claro') : estado.tema
-}
+const navegacao = montarNavegacao({
+  secoes: [
+    { id: 'painel', rotulo: 'Painel', icone: LayoutDashboard, href: '#indicadores' },
+    { id: 'dados', rotulo: 'Dados', icone: Database, href: '#estados' },
+    { id: 'preferencias', rotulo: 'Preferências', icone: Settings, href: '#navegacao' },
+  ],
+  atual: 'painel',
+  meses,
+  setores,
+  filtros: estadoDaPagina.filtros,
+  aoFiltrar(filtros) {
+    estadoDaPagina.filtros = filtros
+    void desenharIndicadores()
+  },
+  aoAdicionar: () => mostrarToast('A central de entrada de dados chega na Etapa 2.'),
+})
+document.body.prepend(navegacao.elemento)
 
 const nomesDasAparencias: Record<Aparencia, string> = {
   vidro: 'vidro de verdade (WebGL)',
   css: 'versão CSS (desfoque do navegador)',
   solida: 'versão sólida',
 }
+const estadoDoVidro = el('p', { class: 'secao__nota', atributos: { role: 'status' } })
 
 async function aplicarVidro() {
-  const { raioBarra, raioAbas } = direcoes[estado.direcao]
-  const configurar = (seletor: string, cornerRadius: number) => {
-    const elemento = camadaNav.querySelector<HTMLElement>(seletor)!
-    // Preset "Regular Glass" da biblioteca (valores padrão), com um pouco de desfoque para o texto ficar legível.
-    elemento.dataset.config = JSON.stringify({ cornerRadius, blurAmount: 0.2, shadowOpacity: 0.18 })
-  }
-  configurar('.barra-topo', raioBarra)
-  configurar('.botao-flutuante', raioBarra)
-  configurar('.barra-abas', raioAbas)
-
-  const emUso = await aplicarAparencia(camadaNav, estado.vidro)
-  const aviso = estado.vidro === 'vidro' && emUso !== 'vidro' ? ' O vidro de verdade não funcionou neste navegador, então a versão CSS entrou no lugar.' : ''
-  document.getElementById('estado-vidro')!.textContent = `Navegação em uso: ${nomesDasAparencias[emUso]}.${aviso}`
+  const emUso = await navegacao.aplicarVidro(estadoDaPagina.vidro)
+  const caiu = estadoDaPagina.vidro === 'vidro' && emUso !== 'vidro'
+  estadoDoVidro.textContent = `Navegação em uso: ${nomesDasAparencias[emUso]}.${caiu ? ' O vidro de verdade não funcionou neste navegador, então a versão CSS entrou no lugar.' : ''}`
   document.documentElement.dataset.vidroPronto = 'sim'
 }
 
 function guardarNoEndereco() {
   const novos = new URLSearchParams(location.search)
-  novos.set('direcao', estado.direcao)
-  novos.set('tema', estado.tema)
-  novos.set('vidro', estado.vidro)
-  history.replaceState(null, '', `?${novos}`)
+  novos.set('tema', estadoDaPagina.tema)
+  novos.set('vidro', estadoDaPagina.vidro)
+  history.replaceState(null, '', `?${novos}${location.hash}`)
 }
 
-async function aplicarTudo() {
-  document.documentElement.dataset.tema = temaEfetivo()
-  document.body.dataset.direcao = estado.direcao
-  for (const campo of ['direcao', 'tema', 'vidro'] as const) {
-    const radio = document.querySelector<HTMLInputElement>(`input[name="${campo}"][value="${estado[campo]}"]`)
-    if (radio) radio.checked = true
-  }
-  await desenharPainel()
-  await aplicarVidro()
-}
+// ---------- seções ----------
 
-// ---------- montagem inicial ----------
+const secaoNavegacao = secao(
+  'navegacao',
+  'Navegação e vidro',
+  'O vidro só aparece na camada de navegação: a barra do topo e, no celular, a barra de abas e o botão flutuante. Cartões, gráficos e tabelas usam superfícies comuns.',
+  linha(
+    segmentado<Tema>({
+      nome: 'tema',
+      legenda: 'Tema',
+      valor: estadoDaPagina.tema,
+      opcoes: [
+        { valor: 'sistema', rotulo: 'Sistema' },
+        { valor: 'claro', rotulo: 'Claro' },
+        { valor: 'escuro', rotulo: 'Escuro' },
+      ],
+      aoMudar(valor) {
+        estadoDaPagina.tema = valor
+        guardarNoEndereco()
+        definirTema(valor)
+      },
+    }),
+    segmentado<Aparencia>({
+      nome: 'vidro',
+      legenda: 'Efeito de vidro',
+      valor: estadoDaPagina.vidro,
+      opcoes: [
+        { valor: 'vidro', rotulo: 'Vidro' },
+        { valor: 'css', rotulo: 'CSS' },
+        { valor: 'solida', rotulo: 'Sólido' },
+      ],
+      aoMudar(valor) {
+        estadoDaPagina.vidro = valor
+        guardarNoEndereco()
+        void aplicarVidro()
+      },
+    }),
+  ),
+  estadoDoVidro,
+)
 
-function montarComparacao() {
-  const amostras = (Object.keys(direcoes) as Direcao[]).map((id) => {
-    const cores = ['fundo', 'superficie', 'texto', 'destaque', 'positivo', 'alerta']
-    const ver = el('button', { class: 'botao-secundario', texto: 'Ver esta direção', atributos: { type: 'button' } })
-    ver.addEventListener('click', () => {
-      estado.direcao = id
-      guardarNoEndereco()
-      void aplicarTudo()
-      painel.scrollIntoView({ behavior: 'smooth', block: 'start' })
-    })
-    return el(
-      'article',
-      { class: 'amostra', atributos: { 'data-direcao': id } },
-      el('h2', { class: 'amostra__nome', texto: direcoes[id].nome }),
-      el('p', { class: 'amostra__texto', texto: direcoes[id].descricao }),
-      el('ul', { class: 'amostra__cores', atributos: { 'aria-label': 'Paleta' } }, ...cores.map((cor) => el('li', { class: `amostra__cor amostra__cor--${cor}`, atributos: { title: cor } }))),
-      el('div', { class: 'amostra__tipo' }, el('p', { class: 'amostra__numero numero', texto: '1,2' }), el('p', { class: 'amostra__rotulo', texto: 'Quedas por 1.000 pacientes-dia' })),
-      ver,
+const cores: [string, string][] = [
+  ['fundo', 'Fundo'],
+  ['superficie', 'Superfície'],
+  ['preenchimento', 'Preenchimento'],
+  ['borda', 'Borda'],
+  ['texto', 'Texto'],
+  ['texto-suave', 'Texto suave'],
+  ['destaque', 'Destaque'],
+  ['destaque-suave', 'Destaque suave'],
+  ['alerta', 'Atenção'],
+  ['positivo', 'Positivo'],
+  ['erro', 'Erro'],
+]
+
+const secaoCores = secao(
+  'cores',
+  'Cores',
+  'Dois destaques, no máximo: azul-petróleo para as ações e âmbar para o que pede atenção. Verde e vermelho só aparecem em estado de meta e de erro, sempre com ícone e texto.',
+  el('ul', { class: 'amostras' }, ...cores.map(([token, nome]) => el('li', { class: 'amostra' }, el('span', { class: `amostra__cor amostra__cor--${token}` }), el('span', { class: 'amostra__nome', texto: nome }), el('code', { class: 'amostra__token', texto: `--cor-${token}` })))),
+)
+
+const secaoTipografia = secao(
+  'tipografia',
+  'Tipografia',
+  'Fonte do sistema, com a Inter como reserva. O texto corrido nunca fica abaixo de 16 px. Os números usam algarismos de largura igual, para alinhar em colunas.',
+  el(
+    'dl',
+    { class: 'tipos' },
+    ...(
+      [
+        ['Título de página', 'tipo--titulo', 'Outubro de 2026'],
+        ['Número em destaque', 'tipo--numero-destaque numero', '79%'],
+        ['Número de cartão', 'tipo--numero numero', '1,2'],
+        ['Frase do painel', 'tipo--frase', 'A higiene das mãos caiu de 80% para 79% e saiu da meta.'],
+        ['Texto', 'tipo--texto', 'Seus dados não saem do seu computador.'],
+        ['Texto de apoio', 'tipo--apoio', 'por 1.000 pacientes-dia'],
+      ] as const
+    ).flatMap(([nome, classe, exemplo]) => [el('dt', { texto: nome }), el('dd', { class: classe, texto: exemplo })]),
+  ),
+)
+
+const secaoBotoes = secao(
+  'botoes',
+  'Botões',
+  'Um botão principal por tela. Todos têm pelo menos 44 px de altura e respondem na hora em que são apertados.',
+  linha(
+    botao('Importar planilha', { variante: 'primario', icone: Upload }),
+    botao('Baixar modelo', { variante: 'secundario', icone: Download }),
+    botao('Cancelar'),
+    botao('Ver tendência', { variante: 'texto' }),
+    botao('Apagar tudo', { variante: 'perigo', icone: Trash2 }),
+    botao('Indisponível', { desabilitado: true }),
+  ),
+)
+
+const secaoCampos = secao(
+  'campos',
+  'Campos',
+  'O rótulo fica sempre visível, acima do campo. O erro aparece junto do campo, com ícone, e diz o que fazer.',
+  el(
+    'div',
+    { class: 'palco-grade' },
+    campoTexto({ id: 'exemplo-quedas', rotulo: 'Quedas', valor: '2', tipo: 'number', ajuda: 'Número de quedas de pacientes registradas no mês.' }),
+    campoTexto({ id: 'exemplo-pacientes', rotulo: 'Pacientes-dia', valor: '8,5', erro: 'Use um número inteiro, sem vírgula. Por exemplo: 850.' }),
+    seletor({ id: 'exemplo-setor', rotulo: 'Setor', opcoes: setores.map((s) => ({ valor: s.id, rotulo: s.nome })) }),
+    campoTexto({ id: 'exemplo-visao', rotulo: 'Nome da visão', valor: 'Diretoria' }),
+  ),
+)
+
+const secaoFiltros = secao(
+  'filtros',
+  'Filtros',
+  'Chips ligam e desligam, e podem ficar vários ligados. O controle segmentado serve para escolher uma opção só.',
+  el('div', { class: 'chips', atributos: { role: 'group', 'aria-label': 'Setores' } }, ...setores.map((s, i) => chip(s.nome, i < 2))),
+  segmentado({
+    nome: 'comparar',
+    legenda: 'Comparar com',
+    valor: 'mes',
+    opcoes: [
+      { valor: 'mes', rotulo: 'Mês anterior' },
+      { valor: 'ano', rotulo: 'Mesmo mês do ano passado' },
+    ],
+    aoMudar: () => undefined,
+  }),
+)
+
+const palcoDosIndicadores = el('div', { class: 'palco-indicadores' })
+const secaoIndicadores = secao(
+  'indicadores',
+  'Cartões de indicador',
+  'Um indicador em destaque, com o gráfico de 12 meses, e os outros ao lado. Os filtros de mês e de setor, na barra do topo, mudam estes cartões na hora.',
+  palcoDosIndicadores,
+)
+
+async function desenharIndicadores() {
+  graficoAtual?.destroy()
+  graficoAtual = null
+  const { filtros } = estadoDaPagina
+  const [resumos, frases] = await Promise.all([fonteDeDados.resumo(filtros), fonteDeDados.frases(filtros)])
+  const mesAnterior = meses[meses.indexOf(filtros.mes) - 1] ?? null
+  const setor = filtros.setorId === 'todos' ? 'Todos os setores' : (setores.find((s) => s.id === filtros.setorId)?.nome ?? '')
+  const destaque =
+    resumos.find((r) => r.indicador.id === estadoDaPagina.destaqueId) ?? resumos.find((r) => r.situacao === 'fora-da-meta') ?? resumos[0]!
+  const grande = cartaoDestaque(destaque, mesAnterior)
+  const compactos = resumos
+    .filter((r) => r !== destaque)
+    .map((r) =>
+      cartaoCompacto(r, mesAnterior, () => {
+        estadoDaPagina.destaqueId = r.indicador.id
+        void desenharIndicadores()
+      }),
     )
-  })
-  document.getElementById('comparacao')!.replaceChildren(...amostras)
-}
 
-function montarFiltros() {
-  const seletorMes = document.querySelector<HTMLSelectElement>('#filtro-mes')!
-  const seletorSetor = document.querySelector<HTMLSelectElement>('#filtro-setor')!
-  // No celular o mês aparece curto ("Out/2026"), para os dois filtros caberem na barra.
-  const rotuloDoMes = (mes: string) =>
-    telaEstreita.matches ? `${capitalizar(formatar.mesCurto(mes))}/${mes.slice(0, 4)}` : capitalizar(formatar.mesComAno(mes))
-  const preencherMeses = () => {
-    seletorMes.replaceChildren(...[...meses].reverse().map((mes) => el('option', { texto: rotuloDoMes(mes), atributos: { value: mes } })))
-    seletorMes.value = estado.filtros.mes
-  }
-  preencherMeses()
-  telaEstreita.addEventListener('change', preencherMeses)
-  seletorSetor.replaceChildren(
-    el('option', { texto: 'Todos os setores', atributos: { value: 'todos' } }),
-    ...setores.map((s) => el('option', { texto: s.nome, atributos: { value: s.id } })),
+  palcoDosIndicadores.replaceChildren(
+    el('p', { class: 'palco-indicadores__periodo', texto: `${capitalizar(formatar.mesComAno(filtros.mes))} · ${setor}${mesAnterior ? `, comparado a ${formatar.mes(mesAnterior)}` : ''}` }),
+    el('div', { class: 'grade-painel' }, grande.elemento, el('div', { class: 'grade-painel__coluna' }, ...compactos)),
+    el(
+      'section',
+      { class: 'mudancas' },
+      el('h3', { class: 'mudancas__titulo', texto: 'O que mudou' }),
+      frases.length
+        ? el('ul', { class: 'mudancas__lista' }, ...frases.map((f) => el('li', { texto: f })))
+        : el('p', { class: 'sem-dados', texto: 'Nenhuma mudança importante neste mês.' }),
+    ),
   )
-  seletorMes.value = estado.filtros.mes
-  seletorMes.addEventListener('change', () => {
-    estado.filtros.mes = seletorMes.value
-    void desenharPainel()
-  })
-  seletorSetor.addEventListener('change', () => {
-    estado.filtros.setorId = seletorSetor.value
-    void desenharPainel()
-  })
+  graficoAtual = grande.iniciarGrafico()
 }
 
-function montarNavegacao() {
-  const icones: Record<string, IconNode> = { painel: LayoutDashboard, dados: Database, preferencias: Settings }
-  for (const link of camadaNav.querySelectorAll<HTMLElement>('[data-icone]')) link.prepend(icone(icones[link.dataset.icone!]!, 22))
-  for (const botao of camadaNav.querySelectorAll<HTMLElement>('[data-adicionar]')) botao.prepend(icone(Plus, 18))
-  // Nesta etapa os links da navegação são só visuais.
-  for (const link of camadaNav.querySelectorAll('a')) link.addEventListener('click', (evento) => evento.preventDefault())
-}
+const secaoAvisos = secao(
+  'avisos',
+  'Avisos',
+  'Cada tipo tem cor, ícone e título próprios. O texto diz o que aconteceu e, quando cabe, o que fazer.',
+  el(
+    'div',
+    { class: 'palco-coluna' },
+    aviso('info', 'Seus dados ficam só neste navegador.', 'Nada é enviado para a internet. Para usar em outro computador, faça um backup.'),
+    aviso('sucesso', 'Planilha importada.', '6 setores e 12 meses entraram no painel.'),
+    aviso('atencao', 'Ignoramos 2 colunas que parecem identificar pacientes.', 'O painel só usa contagens por setor. As outras colunas foram importadas normalmente.'),
+    aviso('erro', 'Não conseguimos ler este arquivo.', 'Ele precisa ser uma planilha .xlsx ou .csv de até 15 MB. Confira o arquivo e tente de novo.'),
+  ),
+)
 
-for (const radio of document.querySelectorAll<HTMLInputElement>('.segmentado input')) {
-  radio.addEventListener('change', () => {
-    if (radio.name === 'direcao') estado.direcao = radio.value as Direcao
-    if (radio.name === 'tema') estado.tema = radio.value as Tema
-    if (radio.name === 'vidro') estado.vidro = radio.value as Aparencia
-    guardarNoEndereco()
-    void aplicarTudo()
-  })
-}
+// Um cartão sem dados: o Pronto-Socorro não lançou março de 2026 nos dados fictícios.
+const [semDados] = await fonteDeDados.resumo({ mes: '2026-03', setorId: 'pronto-socorro' })
 
-prefereEscuro.addEventListener('change', () => {
-  if (estado.tema === 'sistema') void aplicarTudo()
+const secaoEstados = secao(
+  'estados',
+  'Estados',
+  'O que a pessoa vê quando ainda não há dados, enquanto carrega, quando algo dá errado e quando faltam números para um indicador.',
+  el(
+    'div',
+    { class: 'palco-grade' },
+    estado({ titulo: 'Ainda não há dados aqui', texto: 'Importe a planilha que você já usa ou lance os números do mês à mão.', acao: botao('Adicionar dados', { variante: 'primario' }) }),
+    esqueleto(),
+    estado({ tipo: 'erro', titulo: 'Não foi possível abrir seus dados', texto: 'Feche outras abas deste site e tente de novo. Seus dados continuam guardados neste navegador.', acao: botao('Tentar de novo') }),
+    semDados ? cartaoCompacto(semDados, '2026-02') : null,
+  ),
+)
+
+let registroApagado = false
+const linhaDoRegistro = el('p', { class: 'secao__nota', texto: 'Registro de exemplo: Clínica Médica, outubro de 2026.' })
+const secaoToast = secao(
+  'toast',
+  'Aviso rápido com "Desfazer"',
+  'Em vez de perguntar "tem certeza?", o produto faz a ação e oferece "Desfazer" por alguns segundos.',
+  linha(
+    botao('Apagar registro de exemplo', {
+      variante: 'secundario',
+      aoClicar() {
+        if (registroApagado) return
+        registroApagado = true
+        linhaDoRegistro.textContent = 'O registro de exemplo foi apagado.'
+        mostrarToast('Registro apagado.', {
+          aoDesfazer() {
+            registroApagado = false
+            linhaDoRegistro.textContent = 'Registro de exemplo: Clínica Médica, outubro de 2026.'
+          },
+        })
+      },
+    }),
+  ),
+  linhaDoRegistro,
+)
+
+const secaoDepois = secao(
+  'depois',
+  'Chegam na Etapa 2',
+  'Estas peças entram na galeria junto com as telas que as usam.',
+  el('ul', { class: 'lista-simples' }, ...['Tabela', 'Grade de lançamento', 'Área de arrastar arquivos', 'Barra de progresso', 'Folhas e modais de confirmação'].map((texto) => el('li', { texto }))),
+)
+
+secoes.replaceChildren(secaoNavegacao, secaoCores, secaoTipografia, secaoBotoes, secaoCampos, secaoFiltros, secaoIndicadores, secaoAvisos, secaoEstados, secaoToast, secaoDepois)
+
+// Quando o tema muda, o gráfico e o vidro são refeitos com as cores novas.
+aoMudarTema(() => {
+  void desenharIndicadores()
+  void navegacao.atualizarVidro()
 })
-// Ao cruzar a largura em que a navegação muda (barra de abas no celular), o vidro é refeito.
-telaEstreita.addEventListener('change', () => void aplicarVidro())
-window.addEventListener('beforeprint', fundoMudou)
 
-if (parametros.get('limpo') === '1') document.body.classList.add('sem-controles')
-montarComparacao()
-montarFiltros()
-montarNavegacao()
-await aplicarTudo()
+definirTema(estadoDaPagina.tema)
+await desenharIndicadores()
+await aplicarVidro()

@@ -2,6 +2,17 @@
 
 Decisões não óbvias, com data. A mais recente fica no topo.
 
+## 11/11/2026: fase 1, fim da Etapa 1 (direção A, tokens e componentes)
+
+- **Direção visual A, "Sereno", escolhida pelo Felipe.** Clara e arejada: azul-petróleo (`#0b6b8a` no tema claro, `#5cc4e2` no escuro) para as ações, âmbar para o que pede atenção, cantos de 20 px nos cartões, um indicador em destaque com o gráfico e os outros ao lado. A direção B foi para `docs/arquivo/direcoes-etapa-1/`. A ideia dela de pôr os indicadores em lista pode voltar como uma visão dentro da A.
+- **Valores finais do vidro.** Preset "Regular Glass" (os padrões da biblioteca: `refraction 0.69`, `chromAberration 0.05`, `edgeHighlight 0.05`, `fresnel 1`, `zRadius 40`), com três ajustes: `blurAmount 0.2`, para o texto ficar legível nos dois temas; `shadowOpacity 0.18`, mais discreta que o padrão de 0,30; e `cornerRadius` lido dos tokens (`--raio-barra`, 28 px, na barra do topo e no botão flutuante; `--raio-abas`, 32 px, na barra de abas). Ficam em `AJUSTES_DO_VIDRO`, em `src/componentes/navegacao.ts`.
+- **Tema definido antes da primeira pintura por `public/tema-inicial.js`**, um arquivo de 1 linha carregado no `<head>`. Sem ele, quem usa o tema escuro via a página piscar em claro. Ele é um arquivo próprio porque a CSP não permite script embutido no HTML. Depois, `src/tema.ts` assume.
+- **A preferência de tema ainda não é guardada.** Ela vale enquanto a página está aberta e vai no endereço da galeria (`?tema=`). Guardar de verdade é da fase 2, junto com as outras preferências.
+- **Token `--cor-borda-forte`** para o contorno de campos, seletores e chips: a borda comum (`--cor-borda`) é clara demais para marcar onde um campo começa.
+- **Erro tem cor própria (`--cor-erro`)**, separada do âmbar de atenção, mas só aparece em erro de verdade (arquivo ilegível, campo inválido) e sempre com ícone e texto.
+- **Cartão sem dados diz "Sem dados neste mês"** com palavras, além do traço no lugar do número.
+- **O protótipo antigo ganhou uma cópia dos estilos de outubro** (`prototipo/estilos-antigos/`), para continuar igual enquanto o Felipe não decide se a pasta será apagada.
+
 ## 11/11/2026: fase 1, Etapa 1 (plano e direções visuais)
 
 - **Plano novo de duas fases.** Fase 1 (visual, Fable 5.2) e fase 2 (engenharia, Opus 5.5). O roteiro antigo foi para `docs/arquivo/`. O "protótipo das entrevistas" abaixo é do plano antigo.

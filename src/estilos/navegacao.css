@@ -1,0 +1,214 @@
+/* Camada de navegação: a única parte do produto que usa vidro. Ela é a raiz do liquid glass. */
+
+.camada-nav {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.camada-nav > * {
+  pointer-events: auto;
+}
+
+/* Faixas de fundo fixas. O vidro refrata só elas, nunca o conteúdo que rola. */
+.faixa {
+  position: absolute;
+  left: 0;
+  right: 0;
+  pointer-events: none;
+}
+
+.faixa--topo {
+  top: 0;
+  height: var(--altura-faixa);
+  background: var(--faixa-topo);
+}
+
+/* Só no celular: o conteúdo some aos poucos ao chegar na barra de abas. */
+.faixa--base {
+  bottom: 0;
+  display: none;
+  height: 132px;
+  background: linear-gradient(to bottom, transparent, var(--cor-fundo) 62%);
+}
+
+.barra-topo {
+  position: absolute;
+  top: 14px;
+  left: 50%;
+  translate: -50% 0;
+  width: min(100% - 32px, var(--largura-pagina));
+  min-height: 56px;
+  display: flex;
+  align-items: center;
+  gap: var(--espaco-4);
+  padding: 6px 8px 6px 20px;
+  border-radius: var(--raio-barra);
+}
+
+.marca {
+  font-weight: var(--peso-forte);
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+}
+
+.barra-topo__nav {
+  display: flex;
+  gap: 2px;
+}
+
+.barra-topo__nav a {
+  display: flex;
+  align-items: center;
+  min-height: var(--alvo-de-toque);
+  padding: 0 14px;
+  border-radius: calc(var(--raio-barra) - 6px);
+  color: inherit;
+  font-weight: var(--peso-medio);
+  text-decoration: none;
+  transition: background-color var(--duracao-rapida) var(--curva-saida);
+}
+
+.barra-topo__nav a:hover {
+  background: var(--vidro-realce);
+}
+
+.barra-topo__nav a[aria-current='page'] {
+  background: var(--vidro-ativo);
+  font-weight: var(--peso-semi);
+}
+
+.barra-topo__filtros {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: auto;
+  min-width: 0;
+}
+
+/* Dentro do vidro, os seletores não têm contorno: só um realce translúcido. */
+.barra-topo .seletor select {
+  border: 0;
+  border-radius: calc(var(--raio-barra) - 6px);
+  background: var(--vidro-realce);
+}
+
+.barra-topo .botao {
+  border-radius: calc(var(--raio-barra) - 6px);
+}
+
+.botao-flutuante {
+  position: absolute;
+  right: 16px;
+  bottom: 96px;
+  display: none;
+  align-items: center;
+  gap: 6px;
+  min-height: 52px;
+  padding: 0 20px;
+  border: 0;
+  border-radius: var(--raio-barra);
+  font: inherit;
+  font-weight: var(--peso-semi);
+  cursor: pointer;
+  transition: scale var(--duracao-rapida) var(--curva-saida);
+}
+
+.botao-flutuante:active {
+  scale: 0.97;
+}
+
+.barra-abas {
+  position: absolute;
+  left: 50%;
+  bottom: 16px;
+  translate: -50% 0;
+  width: min(100% - 32px, 26rem);
+  display: none;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
+  gap: 2px;
+  padding: 6px;
+  border-radius: var(--raio-abas);
+}
+
+.barra-abas a {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  min-height: 52px;
+  border-radius: calc(var(--raio-abas) - 6px);
+  color: inherit;
+  font-size: var(--texto-xs);
+  font-weight: var(--peso-medio);
+  text-decoration: none;
+}
+
+.barra-abas a[aria-current='page'] {
+  background: var(--vidro-ativo);
+  color: var(--vidro-destaque);
+  font-weight: var(--peso-semi);
+}
+
+@media (max-width: 719px) {
+  .barra-topo {
+    top: 10px;
+    padding: 6px;
+    gap: 6px;
+  }
+
+  .marca,
+  .barra-topo__nav,
+  .barra-topo__adicionar {
+    display: none;
+  }
+
+  .barra-topo__filtros {
+    flex: 1;
+    margin-left: 0;
+  }
+
+  /* O filtro de mês ocupa só o que precisa; o de setor fica com o resto. */
+  .barra-topo .seletor:last-of-type {
+    flex: 1;
+  }
+
+  .botao-flutuante {
+    display: inline-flex;
+  }
+
+  .barra-abas {
+    display: grid;
+  }
+
+  .faixa--base {
+    display: block;
+  }
+}
+
+@media (min-width: 720px) and (max-width: 1023px) {
+  .barra-topo__nav {
+    display: none;
+  }
+}
+
+/* O conteúdo da página começa abaixo da faixa do topo e, no celular, termina acima da barra de abas. */
+.com-navegacao {
+  padding-top: calc(var(--altura-faixa) + var(--espaco-6));
+  padding-bottom: 160px;
+}
+
+@media (min-width: 720px) {
+  .com-navegacao {
+    padding-bottom: var(--espaco-16);
+  }
+}
+
+@media print {
+  .camada-nav {
+    display: none;
+  }
+}

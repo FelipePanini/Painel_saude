@@ -1,22 +1,35 @@
-/* Tokens de design. Todo valor visual do projeto sai daqui. */
+/*
+ * Tokens de design (direção A, "Sereno", escolhida em 11/11/2026).
+ * Todo valor visual do projeto sai daqui: cores, tipografia, espaçamento, raios, elevação e movimento.
+ * O tema escuro troca só os valores; os nomes são os mesmos.
+ * <html data-tema="claro|escuro"> é definido por public/tema-inicial.js e por src/tema.ts.
+ */
 :root {
-  /* Tipografia */
+  /* ---------- tipografia ---------- */
+  /* Pilha do sistema, com Inter auto-hospedada. Em aparelhos Apple, o sistema mostra a fonte dele. */
   --fonte-texto: system-ui, -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, sans-serif;
   --fonte-numeros: var(--fonte-texto);
-  --texto-xs: 0.75rem;
-  --texto-sm: 0.875rem;
-  --texto-base: 1rem;
+  --texto-xs: 0.75rem; /* 12 px: só rótulos de eixo e da barra de abas */
+  --texto-sm: 0.875rem; /* 14 px */
+  --texto-base: 1rem; /* 16 px: o menor tamanho de texto corrido */
+  --texto-md: 1.125rem; /* 18 px: frases do painel */
   --texto-lg: 1.25rem;
   --texto-xl: 1.75rem;
   --texto-2xl: 2.5rem;
+  --texto-numero: 2rem; /* número de um cartão comum */
+  --texto-numero-destaque: clamp(3rem, 2rem + 4vw, 4.5rem);
   --peso-normal: 400;
   --peso-medio: 500;
   --peso-semi: 600;
   --peso-forte: 700;
+  --peso-numero: 600;
   --altura-linha: 1.5;
   --altura-linha-titulo: 1.15;
+  /* Texto grande pede letras mais juntas. */
+  --entreletra-titulo: -0.025em;
+  --entreletra-numero: -0.03em;
 
-  /* Espaçamento (base 4 px) */
+  /* ---------- espaçamento (múltiplos de 4 px) ---------- */
   --espaco-1: 0.25rem;
   --espaco-2: 0.5rem;
   --espaco-3: 0.75rem;
@@ -25,53 +38,104 @@
   --espaco-8: 2rem;
   --espaco-12: 3rem;
   --espaco-16: 4rem;
+  --largura-pagina: 72rem;
+  --alvo-de-toque: 44px;
 
-  /* Raios */
-  --raio-sm: 6px;
-  --raio-md: 12px;
-  --raio-lg: 20px;
+  /* ---------- raios ---------- */
+  --raio-controle: 12px;
+  --raio-cartao: 20px;
+  --raio-barra: 28px;
+  --raio-abas: 32px;
   --raio-total: 999px;
 
-  /* Movimento: curto e sutil (150 a 300 ms) */
+  /* ---------- movimento: curto e sutil ---------- */
   --duracao-rapida: 150ms;
   --duracao-media: 220ms;
   --duracao-lenta: 300ms;
   --curva-saida: cubic-bezier(0.2, 0.8, 0.2, 1);
 
-  /* Cores, modo claro */
-  --cor-fundo: #f5f5f7;
+  /* ---------- cores, tema claro ---------- */
+  --cor-fundo: #f2f5f8;
   --cor-superficie: #ffffff;
-  --cor-texto: #1d1d1f;
-  --cor-texto-suave: #5b5b60;
-  --cor-borda: #d9d9de;
-  --cor-preenchimento: #e8e8ed;
-  --cor-destaque: #0a66d8;
+  --cor-texto: #10202b;
+  --cor-texto-suave: #4d5f6c;
+  --cor-borda: #dbe3ea;
+  --cor-borda-forte: #8a9aa6; /* contorno de campos: 3:1 sobre a superfície */
+  --cor-preenchimento: #e6ecf1;
+  /* Dois destaques, no máximo: azul-petróleo para ação e âmbar para atenção. */
+  --cor-destaque: #0b6b8a;
   --cor-destaque-texto: #ffffff;
-  --cor-positivo: #1a7f37;
-  --cor-alerta: #9a6700;
-  --cor-negativo: #c62828;
-  --cor-foco: #0a66d8;
-  --sombra-cartao: 0 1px 2px rgb(0 0 0 / 0.06), 0 4px 16px rgb(0 0 0 / 0.04);
+  --cor-destaque-suave: #e1f1f6;
+  --cor-alerta: #8a5a00;
+  --cor-alerta-suave: #fbf0d9;
+  --cor-positivo: #17713f;
+  --cor-positivo-suave: #e2f3e9;
+  --cor-erro: #b3261e;
+  --cor-erro-suave: #fbe9e7;
+  --cor-foco: #0b6b8a;
+  --foco-largura: 3px;
+
+  /* ---------- elevação ---------- */
+  --sombra-cartao: 0 1px 2px rgb(16 32 43 / 0.05), 0 8px 24px rgb(16 32 43 / 0.05);
+  --sombra-flutuante: 0 4px 12px rgb(16 32 43 / 0.1), 0 16px 40px rgb(16 32 43 / 0.14);
+
+  /* ---------- camada de navegação e vidro ---------- */
+  --altura-faixa: 92px;
+  --faixa-topo:
+    radial-gradient(60% 150% at 12% 0%, #b9e2f0 0%, transparent 70%),
+    radial-gradient(50% 130% at 88% 10%, #ccd9ff 0%, transparent 70%),
+    radial-gradient(40% 130% at 50% -20%, #cdefe0 0%, transparent 70%),
+    linear-gradient(to bottom, #e9f1f6 55%, transparent);
+  --vidro-fundo: rgb(255 255 255 / 0.62);
+  --vidro-solido: #ffffff;
+  --vidro-borda: rgb(16 32 43 / 0.08);
+  --vidro-brilho: rgb(255 255 255 / 0.8);
+  --vidro-sombra: 0 8px 24px rgb(16 32 43 / 0.1);
+  --vidro-texto: #10202b;
+  --vidro-realce: rgb(16 32 43 / 0.06);
+  --vidro-ativo: rgb(255 255 255 / 0.75);
+  --vidro-destaque: #0b6b8a;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --cor-fundo: #0f0f11;
-    --cor-superficie: #1c1c1f;
-    --cor-texto: #f5f5f7;
-    --cor-texto-suave: #a8a8ae;
-    --cor-borda: #34343a;
-    --cor-preenchimento: #2a2a2e;
-    --cor-destaque: #4c9dff;
-    --cor-destaque-texto: #0f0f11;
-    --cor-positivo: #4ac26b;
-    --cor-alerta: #d4a72c;
-    --cor-negativo: #ff6b6b;
-    --cor-foco: #4c9dff;
-    --sombra-cartao: 0 1px 2px rgb(0 0 0 / 0.4);
-  }
+:root[data-tema='escuro'] {
+  --cor-fundo: #0b1115;
+  --cor-superficie: #141c22;
+  --cor-texto: #eef3f6;
+  --cor-texto-suave: #9fb0bc;
+  --cor-borda: #25313a;
+  --cor-borda-forte: #6b7c88;
+  --cor-preenchimento: #1b262e;
+  --cor-destaque: #5cc4e2;
+  --cor-destaque-texto: #06222b;
+  --cor-destaque-suave: #12303b;
+  --cor-alerta: #e6b54a;
+  --cor-alerta-suave: #33270c;
+  --cor-positivo: #5bd08c;
+  --cor-positivo-suave: #12301f;
+  --cor-erro: #ff8a80;
+  --cor-erro-suave: #3a1614;
+  --cor-foco: #5cc4e2;
+
+  --sombra-cartao: inset 0 0 0 1px #25313a;
+  --sombra-flutuante: 0 4px 12px rgb(0 0 0 / 0.4), 0 16px 40px rgb(0 0 0 / 0.5);
+
+  --faixa-topo:
+    radial-gradient(60% 150% at 12% 0%, #10465a 0%, transparent 70%),
+    radial-gradient(50% 130% at 88% 10%, #1b3472 0%, transparent 70%),
+    radial-gradient(40% 130% at 50% -20%, #114436 0%, transparent 70%),
+    linear-gradient(to bottom, #0e171c 55%, transparent);
+  --vidro-fundo: rgb(20 28 34 / 0.6);
+  --vidro-solido: #141c22;
+  --vidro-borda: rgb(255 255 255 / 0.1);
+  --vidro-brilho: rgb(255 255 255 / 0.14);
+  --vidro-sombra: 0 8px 24px rgb(0 0 0 / 0.45);
+  --vidro-texto: #eef3f6;
+  --vidro-realce: rgb(255 255 255 / 0.08);
+  --vidro-ativo: rgb(255 255 255 / 0.14);
+  --vidro-destaque: #5cc4e2;
 }
 
+/* Com "reduzir movimento" ligado no sistema, as durações viram zero e as animações somem. */
 @media (prefers-reduced-motion: reduce) {
   :root {
     --duracao-rapida: 0ms;

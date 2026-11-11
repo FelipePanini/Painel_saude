@@ -1,3 +1,5 @@
+/* Base: o mínimo que vale para todas as páginas. */
+
 *,
 *::before,
 *::after {
@@ -7,6 +9,14 @@
 html {
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
+}
+
+:root[data-tema='claro'] {
+  color-scheme: light;
+}
+
+:root[data-tema='escuro'] {
+  color-scheme: dark;
 }
 
 body {
@@ -32,17 +42,33 @@ p {
   margin: 0;
 }
 
+/* Foco próprio e bem visível, igual em todos os controles. */
 :focus-visible {
-  outline: 2px solid var(--cor-foco);
+  outline: var(--foco-largura) solid var(--cor-foco);
   outline-offset: 2px;
 }
 
-/* Números alinhados em colunas e cartões */
+/* Números alinhados em colunas e cartões. */
 .numero {
   font-family: var(--fonte-numeros);
   font-variant-numeric: tabular-nums;
 }
 
+/* Texto só para leitores de tela. */
+.so-leitor {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.icone {
+  flex: none;
+}
+
+/* Página inicial provisória (a de verdade vem na Etapa 3). */
 .inicio {
   max-width: 64rem;
   margin: 0 auto;
@@ -52,7 +78,7 @@ p {
 .inicio__titulo {
   font-size: var(--texto-2xl);
   font-weight: var(--peso-forte);
-  letter-spacing: -0.02em;
+  letter-spacing: var(--entreletra-titulo);
 }
 
 .inicio__subtitulo {

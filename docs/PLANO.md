@@ -5,8 +5,10 @@ Este arquivo diz em que ponto o projeto está e qual é o próximo passo. Uma se
 ## Onde estamos
 
 - **Fase atual:** fase 1, visual (Claude Fable 5.2), de 11/11 a 22/11/2026.
-- **Etapa atual:** Etapa 1, plano e direção visual, até 13/11.
-- **Próximo passo:** Felipe escolhe uma das duas direções visuais em `/componentes/`. Depois disso: tokens finais, componentes base, camada de navegação nas três aparências do vidro.
+- **Etapa atual:** a Etapa 1 terminou em 11/11. A próxima é a Etapa 2, protótipo para a validação, até 18/11.
+- **Direção visual:** A, "Sereno", escolhida pelo Felipe em 11/11. Os tokens estão em `src/estilos/tokens.css`.
+- **Próximo passo:** começar a Etapa 2 pelo roteador e pela tela do painel (`src/ui/`), usando os componentes de `src/componentes/` e a navegação de `src/componentes/navegacao.ts`. Depois, detalhe do indicador e central de entrada.
+- **Como ver:** `npm run dev` e abrir `http://localhost:5173/componentes/` (galeria de componentes).
 - **Briefings:** `docs/BRIEFING_FASE_1.md` e `docs/BRIEFING_FASE_2.md`.
 
 ### Para retomar depois de um `/clear`
@@ -30,11 +32,10 @@ Felipe avisou que não estaria disponível para responder e pediu para eu seguir
 
 ## Pendências que dependem do Felipe
 
-1. **Escolher a direção visual** (A ou B) na galeria. Bloqueia o resto da Etapa 1.
-2. **Protótipo antigo (`prototipo/`)**: a aba "Plantonista" mostra dinheiro, e a regra nova proíbe finanças até nos dados fictícios. Recomendo apagar a pasta inteira, porque a fase 1 a substitui. Não apaguei porque ela fica fora de `src/`, `tests/` e `docs/`, e o briefing pede aprovação nesse caso.
-3. **Amostra de texto da professora**, para o Humanizer pegar a voz dela. Quando chegar, reviso todos os textos das telas.
-4. **`docs/SPEC.md`**: ainda não existe. A fase 1 usa a configuração de exemplo; a fase 2 não começa sem a SPEC.
-5. **Commits locais ainda não enviados ao GitHub.** Enviar exige aprovação.
+1. **Protótipo antigo (`prototipo/`)**: a aba "Plantonista" mostra dinheiro, e a regra nova proíbe finanças até nos dados fictícios. Recomendo apagar a pasta inteira, porque a fase 1 a substitui. Não apaguei porque ela fica fora de `src/`, `tests/` e `docs/`, e o briefing pede aprovação nesse caso. Enquanto isso, ela usa uma cópia dos estilos de outubro (`prototipo/estilos-antigos/`), para não mudar junto com o sistema de design novo.
+2. **Amostra de texto da professora**, para o Humanizer pegar a voz dela. Os textos das telas ainda não passaram pelo Humanizer; reviso todos quando a amostra chegar.
+3. **`docs/SPEC.md`**: ainda não existe. A fase 1 usa a configuração de exemplo; a fase 2 não começa sem a SPEC.
+4. **Commits locais ainda não enviados ao GitHub.** Enviar exige aprovação.
 
 ## Personas [VALIDAR COM A PROFESSORA]
 
@@ -74,15 +75,18 @@ Todas em 390 px e 1280 px, nos modos claro e escuro.
 
 ## Etapas da fase 1
 
-### Etapa 1, até 13/11: plano e direção visual — em andamento
+### Etapa 1, até 13/11: plano e direção visual — concluída em 11/11
 
 - [x] Briefings salvos em `docs/`, `CLAUDE.md` novo na raiz.
 - [x] Este plano.
 - [x] Biblioteca de vidro instalada e testada com a CSP atual. Funcionou sem mudar a CSP.
 - [x] Contratos de dados: `src/tipos/`, `src/nichos/exemplo.ts`, `src/dados-ficticios/` e `src/fonte-de-dados/`.
 - [x] Duas direções visuais do painel na galeria (`/componentes/`): **A · Sereno** e **B · Boletim**. Capturas em `test-results/direcoes/` depois de rodar `npm run check`.
-- [ ] **Felipe escolhe a direção.** Como ver: `npm run dev` e abrir `http://localhost:5173/componentes/`.
-- [ ] Tokens finais, componentes base, navegação nas três aparências do vidro.
+- [x] **Felipe escolheu a direção A.** A direção B ficou guardada em `docs/arquivo/direcoes-etapa-1/`, só como referência.
+- [x] Tokens finais em `src/estilos/tokens.css`: cores nos dois temas, tipografia, espaçamento, raios, elevação e movimento.
+- [x] Componentes base em `src/componentes/` e `src/estilos/componentes.css`: botões, campos, seletor, chips, controle segmentado, cartão de indicador (em destaque e compacto), minigráfico, gráfico de tendência, selo de meta, avisos, estados (vazio, carregando, erro, sem dados) e aviso rápido com "Desfazer".
+- [x] Navegação em `src/componentes/navegacao.ts`, nas três aparências do vidro. Capturas em `test-results/galeria/*-nav-*.png` depois de rodar `npm run check`.
+- [x] A galeria (`/componentes/`) virou a galeria de componentes. Faltam nela as peças que chegam com as telas da Etapa 2: tabela, grade de lançamento, área de arrastar arquivos, barra de progresso, folhas e modais.
 - [x] Skill `verify` (já existe desde o esqueleto).
 
 Pronto quando: a direção está escolhida, o `npm run check` passa e há screenshots da navegação nas três aparências.
