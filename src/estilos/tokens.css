@@ -62,6 +62,7 @@
   --cor-borda: #dbe3ea;
   --cor-borda-forte: #8a9aa6; /* contorno de campos: 3:1 sobre a superfície */
   --cor-preenchimento: #e6ecf1;
+  --cor-controle-ativo: #ffffff; /* opção escolhida num controle segmentado */
   /* Dois destaques, no máximo: azul-petróleo para ação e âmbar para atenção. */
   --cor-destaque: #0b6b8a;
   --cor-destaque-texto: #ffffff;
@@ -105,6 +106,7 @@
   --cor-borda: #25313a;
   --cor-borda-forte: #6b7c88;
   --cor-preenchimento: #1b262e;
+  --cor-controle-ativo: #34444f;
   --cor-destaque: #5cc4e2;
   --cor-destaque-texto: #06222b;
   --cor-destaque-suave: #12303b;

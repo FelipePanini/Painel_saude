@@ -228,7 +228,7 @@
 }
 
 .segmentado input:checked + span {
-  background: var(--cor-superficie);
+  background: var(--cor-controle-ativo);
   box-shadow: 0 1px 3px rgb(0 0 0 / 0.12);
   font-weight: var(--peso-semi);
 }
