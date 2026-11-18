@@ -26,7 +26,7 @@ Site estático em que profissionais e gestores da saúde importam a planilha que
 - Fase 2: SheetJS pelo CDN oficial (https://cdn.sheetjs.com), na versão mais recente, e nunca o pacote `xlsx` do npm (0.18.5, CVE-2023-30533). Também idb-keyval, Vitest, @axe-core/playwright e, se entrar o modo sem internet, vite-plugin-pwa.
 - Leitura de arquivo em Web Worker, com limite de 15 MB. O SheetJS e o vidro carregam sob demanda.
 - PDF via folha de estilo de impressão e `window.print()`.
-- Hospedagem estática, com a CSP em `public/_headers`.
+- Hospedagem estática na Vercel. A CSP e os outros cabeçalhos ficam em `public/_headers` (usado pelos testes) e repetidos em `vercel.json` (usado pela Vercel). Um teste confere que os dois são iguais.
 
 ## Comandos
 

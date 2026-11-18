@@ -2,6 +2,13 @@
 
 Decisões não óbvias, com data. A mais recente fica no topo.
 
+## 18/11/2026: hospedagem na Vercel
+
+- **O Felipe vai publicar na Vercel**, a partir do repositório público `FelipePanini/Painel_saude`.
+- **`vercel.json` com os mesmos cabeçalhos do `public/_headers`.** A Vercel não lê o `_headers` (formato do Cloudflare e do Netlify). Sem o `vercel.json`, o site subiria sem a CSP e sem os outros cabeçalhos de segurança. A CSP não mudou: o arquivo só repete o que já valia. Um teste de unidade (`tests/unidade/vercel.test.ts`) falha se os dois arquivos divergirem, então quem mudar a CSP precisa mudar nos dois. O `_headers` fica, porque é ele que o `vite preview` usa nos testes de navegador.
+- **Build na Vercel:** `npm run build`, pasta `dist`. As páginas são `dist/index.html`, `dist/painel/`, `dist/creditos/`, `dist/componentes/` e `dist/prototipo/`.
+- **O histórico local foi juntado com o do `Painel_saude`**, que tinha só um commit com o `LICENSE` (MIT, de Felipe Panini da Silva). Nada foi apagado nem forçado.
+
 ## 18/11/2026: landing page 3D, fatia 4 (acabamento)
 
 - **`npm run desempenho`** (`scripts/desempenho.mjs`) mede a landing com um celular simulado (Pixel 7, processador 4x mais lento, 4G rápida de 9 Mbit/s e 40 ms), sobre o build. Resultado: LCP de 244 ms (228 ms com "reduzir movimento"), CLS de 0, JavaScript inicial de 35 KB, e 142 KB do 3D baixados depois. Todos dentro do orçamento (2,5 s, 0,1 e 80 KB). O script sai com erro se algum passar do orçamento.
