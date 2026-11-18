@@ -2,6 +2,14 @@
 
 Decisões não óbvias, com data. A mais recente fica no topo.
 
+## 18/11/2026: landing page 3D, fatia 4 (acabamento)
+
+- **`npm run desempenho`** (`scripts/desempenho.mjs`) mede a landing com um celular simulado (Pixel 7, processador 4x mais lento, 4G rápida de 9 Mbit/s e 40 ms), sobre o build. Resultado: LCP de 244 ms (228 ms com "reduzir movimento"), CLS de 0, JavaScript inicial de 35 KB, e 142 KB do 3D baixados depois. Todos dentro do orçamento (2,5 s, 0,1 e 80 KB). O script sai com erro se algum passar do orçamento.
+- **Limites da medição.** Servidor local, e o navegador simulado informa os núcleos e a memória do Mac. O Lighthouse não foi rodado: não está instalado e pediria uma dependência nova.
+- **Textos revisados com o Humanizer.** Mudaram quatro frases: a da sequência (repetia a primeira dobra), a segunda frase de privacidade (repetia a primeira), a da vitrine (frase solta, sem verbo) e a abertura dos créditos (falava da própria página).
+- **Mapa do código** com `graphify update .`, sem custo de API: 492 nós, 891 ligações, 19 grupos, em `graphify-out/` (fora do git).
+- **`npm audit --omit=dev`**: nenhuma falha nas dependências que vão para o site. A falha moderada do `minimatch` continua só nas ferramentas de desenvolvimento (ESLint).
+
 ## 18/11/2026: landing page 3D, fatia 3 (vitrine e créditos)
 
 - **Vitrine com as telas reais do painel.** O `npm run vitrine` faz o build, sobe o `vite preview`, abre o `/painel/` em computador (1280 px), tablet (768 px) e celular (390 px), nos dois temas, em 2x, e salva as imagens em `public/vitrine/`. A lista com o texto alternativo vai para `src/landing/vitrine.json`, e o build roda de novo no fim para levar as imagens novas.

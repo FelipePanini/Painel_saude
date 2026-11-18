@@ -5,7 +5,7 @@ Este arquivo diz em que ponto o projeto está e qual é o próximo passo. Uma se
 ## Onde estamos
 
 - **Fase atual:** fase 1, visual (Claude Fable 5.2), de 11/11 a 22/11/2026.
-- **Trabalho atual (18/11):** a landing page 3D, pelo `docs/BRIEFING_LANDING_3D.md`. A Etapa 2 (telas do painel) não começou; ela continua depois da landing, dentro de `/painel/`.
+- **Trabalho atual:** a landing page 3D terminou em 18/11 (`docs/ENTREGA_LANDING.md`). Próximo: a Etapa 2 da fase 1, as telas do painel, dentro de `/painel/`.
 - **Direção visual:** A, "Sereno", escolhida pelo Felipe em 11/11. Os tokens estão em `src/estilos/tokens.css`.
 - **Como ver:** `npm run dev` e abrir `http://localhost:5173/` (landing), `/painel/` (painel de exemplo) e `/componentes/` (galeria).
 - **Briefings:** `docs/BRIEFING_FASE_1.md`, `docs/BRIEFING_FASE_2.md` e `docs/BRIEFING_LANDING_3D.md`.
@@ -25,9 +25,9 @@ Briefing: `docs/BRIEFING_LANDING_3D.md`. O 3D usa o Three.js com cenas em GLB, e
 | 1. Base e robô | Landing em `/`, painel em `/painel/`, Three.js instalado, primeira dobra com o robô (provisório, feito no código), pausa, claro e escuro, testes de rede, CSP, sem WebGL, reduzir movimento e pausa | concluída em 18/11 |
 | 2. Roteiro | Seções 2 a 10, blur, movimento por rolagem, componentes reais do painel | concluída em 18/11, menos a vitrine (seção 7), que foi para a fatia 3 |
 | 3. Cenas 2 e 3 e vitrine | Outras cenas, molduras, `npm run vitrine`, página de créditos | concluída em 18/11, menos as cenas 2 e 3, que esperam os arquivos GLB |
-| 4. Acabamento | Orçamento de desempenho, versão sem movimento, capturas finais, revisão, graphify | não começou |
+| 4. Acabamento | Orçamento de desempenho, versão sem movimento, capturas finais, revisão, graphify | concluída em 18/11. Relatório em `docs/ENTREGA_LANDING.md` |
 
-Próximo passo: fatia 4, o acabamento (orçamento de desempenho medido, versão sem movimento revisada, capturas finais, revisão com Apple design e Humanizer, graphify e `docs/ENTREGA_LANDING.md`). As cenas 2 e 3 entram quando os arquivos GLB chegarem, nas seções de privacidade e de vidro.
+A landing está entregue (ver `docs/ENTREGA_LANDING.md`). As cenas 2 e 3 entram quando os arquivos GLB chegarem. Próximo passo do projeto: a Etapa 2 da fase 1 (telas do painel), dentro de `/painel/`.
 
 O que falta do Felipe para a landing:
 
