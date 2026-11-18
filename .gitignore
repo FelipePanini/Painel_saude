@@ -12,3 +12,6 @@ graphify-out/
 
 # Configuração local do navegador do app (caminho do Node desta máquina)
 .claude/launch.json
+
+# Capturas geradas pelos testes da landing
+capturas/

@@ -74,7 +74,7 @@ test('os filtros da barra mudam os cartões na hora', async ({ page }) => {
   await page.emulateMedia({ reducedMotion: 'reduce' })
   await page.goto('/componentes/?vidro=css')
   await pronto(page)
-  const periodo = page.locator('.palco-indicadores__periodo')
+  const periodo = page.locator('.visao-geral__periodo')
   await expect(periodo).toContainText('Outubro de 2026')
   await page.locator('#filtro-mes').selectOption('2026-03')
   await expect(periodo).toContainText('Março de 2026')

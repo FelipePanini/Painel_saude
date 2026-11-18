@@ -22,6 +22,7 @@ Site estático em que profissionais e gestores da saúde importam a planilha que
 
 - Vite + TypeScript, sem framework de UI.
 - Fase 1: Chart.js, @ybouane/liquidglass, Inter via @fontsource, ícones de código aberto (Lucide ou Phosphor) e Playwright para screenshots.
+- Landing: Three.js (licença MIT) para o robô 3D, carregado sob demanda e só na landing. As cenas do Spline entram como GLB (sem Draco) em `public/3d/`. O runtime do Spline não é usado: o pacote não declara licença.
 - Fase 2: SheetJS pelo CDN oficial (https://cdn.sheetjs.com), na versão mais recente, e nunca o pacote `xlsx` do npm (0.18.5, CVE-2023-30533). Também idb-keyval, Vitest, @axe-core/playwright e, se entrar o modo sem internet, vite-plugin-pwa.
 - Leitura de arquivo em Web Worker, com limite de 15 MB. O SheetJS e o vidro carregam sob demanda.
 - PDF via folha de estilo de impressão e `window.print()`.
@@ -33,6 +34,13 @@ Site estático em que profissionais e gestores da saúde importam a planilha que
 - `npm run check`: na fase 1, roda typecheck, lint, build e screenshots. Na fase 2, inclui também os testes de unidade, de navegador, o axe e a privacidade. Rode antes de dar algo por pronto.
 
 ## Estrutura
+
+- Páginas:
+  - `/` (`index.html`): a landing, com o código em `src/landing/` e o estilo em `src/estilos/landing.css`;
+  - `/painel/` (`painel/index.html`): o produto, com o código em `src/ui/`. Não carrega nada da landing nem do 3D;
+  - `/componentes/`: a galeria de componentes;
+  - `/prototipo/`: o protótipo antigo de outubro;
+  - `public/3d/`: modelos e pôsteres do robô e das cenas.
 
 - Fase 1:
   - `src/estilos/`: tokens;
@@ -52,7 +60,7 @@ Site estático em que profissionais e gestores da saúde importam a planilha que
 
 ## Liquid glass
 
-- Variante Regular da @ybouane/liquidglass, só na camada de navegação: barras, abas, botão flutuante e folhas de confirmação.
+- Variante Regular da @ybouane/liquidglass, só na camada de navegação: barras, abas, botão flutuante e folhas de confirmação. Na landing, só na barra do topo, que fica sobre a faixa fixa e nunca sobre o 3D.
 - Nunca em cartões, gráficos, tabelas, na grade de lançamento ou em texto longo. Nunca vidro sobre vidro.
 - Regras da biblioteca:
   - uma única raiz `LiquidGlass.init`;

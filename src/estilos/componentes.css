@@ -642,3 +642,30 @@
     translate: 0 8px;
   }
 }
+
+/* ---------- visão geral do painel ---------- */
+
+.visao-geral {
+  display: grid;
+  gap: var(--espaco-4);
+}
+
+.visao-geral__periodo {
+  font-weight: var(--peso-semi);
+}
+
+.grade-painel {
+  display: grid;
+  gap: var(--espaco-4);
+}
+
+.grade-painel__coluna {
+  display: grid;
+  gap: var(--espaco-4);
+}
+
+@media (min-width: 960px) {
+  .grade-painel {
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+  }
+}

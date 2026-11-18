@@ -5,17 +5,37 @@ Este arquivo diz em que ponto o projeto está e qual é o próximo passo. Uma se
 ## Onde estamos
 
 - **Fase atual:** fase 1, visual (Claude Fable 5.2), de 11/11 a 22/11/2026.
-- **Etapa atual:** a Etapa 1 terminou em 11/11. A próxima é a Etapa 2, protótipo para a validação, até 18/11.
+- **Trabalho atual (18/11):** a landing page 3D, pelo `docs/BRIEFING_LANDING_3D.md`. A Etapa 2 (telas do painel) não começou; ela continua depois da landing, dentro de `/painel/`.
 - **Direção visual:** A, "Sereno", escolhida pelo Felipe em 11/11. Os tokens estão em `src/estilos/tokens.css`.
-- **Próximo passo:** começar a Etapa 2 pelo roteador e pela tela do painel (`src/ui/`), usando os componentes de `src/componentes/` e a navegação de `src/componentes/navegacao.ts`. Depois, detalhe do indicador e central de entrada.
-- **Como ver:** `npm run dev` e abrir `http://localhost:5173/componentes/` (galeria de componentes).
-- **Briefings:** `docs/BRIEFING_FASE_1.md` e `docs/BRIEFING_FASE_2.md`.
+- **Como ver:** `npm run dev` e abrir `http://localhost:5173/` (landing), `/painel/` (painel de exemplo) e `/componentes/` (galeria).
+- **Briefings:** `docs/BRIEFING_FASE_1.md`, `docs/BRIEFING_FASE_2.md` e `docs/BRIEFING_LANDING_3D.md`.
 
 ### Para retomar depois de um `/clear`
 
 ```text
 Leia o CLAUDE.md, o docs/BRIEFING_FASE_1.md, o docs/PLANO.md, o docs/DECISOES.md e o git log recente. Rode o npm run check para confirmar o estado atual. Depois continue pela próxima etapa da fase 1 do PLANO.md, seguindo o briefing.
 ```
+
+## Landing page 3D (desde 18/11)
+
+Briefing: `docs/BRIEFING_LANDING_3D.md`. O 3D usa o Three.js com cenas em GLB, em vez do runtime do Spline (ver DECISOES de 18/11).
+
+| Fatia | O que entra | Situação |
+| --- | --- | --- |
+| 1. Base e robô | Landing em `/`, painel em `/painel/`, Three.js instalado, primeira dobra com o robô (provisório, feito no código), pausa, claro e escuro, testes de rede, CSP, sem WebGL, reduzir movimento e pausa | concluída em 18/11 |
+| 2. Roteiro | Seções 2 a 10, blur, movimento por rolagem, componentes reais do painel | não começou |
+| 3. Cenas 2 e 3 e vitrine | Outras cenas, molduras, `npm run vitrine`, página de créditos | não começou |
+| 4. Acabamento | Orçamento de desempenho, versão sem movimento, capturas finais, revisão, graphify | não começou |
+
+Próximo passo: fatia 2, o roteiro (seções 2 a 10).
+
+O que falta do Felipe para a landing:
+
+- **Arquivos 3D em `public/3d/`:** `robo.glb`, `cena-2.glb`, `cena-3.glb` (GLTF Binary, sem Draco), os pôsteres PNG de 2560 px e o `CREDITOS.txt`. Enquanto não chegam, o robô da primeira dobra é um modelo simples feito no código, original, nas cores da marca.
+- **Nome do robô:** três propostas em DECISOES, marcadas [VALIDAR].
+- **Inscrição no beta:** como vai ser (e-mail, formulário de terceiro, outro). Tudo que envia dado para fora muda a promessa e a CSP.
+- **Créditos** com os dados reais dos autores das cenas.
+- **Robô próprio antes da pré-venda.** O robô da comunidade tem licença CC BY 4.0: qualquer pessoa pode usar o mesmo modelo, e a licença não dá direito de marca. Serve para o beta; para a pré-venda, vale encomendar ou modificar o robô até ele ser nosso, se a ideia for registrar a marca.
 
 ## Decisões que tomei sem o Felipe (11/11)
 

@@ -4,15 +4,64 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="color-scheme" content="light dark" />
-    <meta name="description" content="Painel de indicadores a partir das suas planilhas. Seus dados não saem do seu computador." />
+    <meta name="description" content="Sua planilha vira um painel de indicadores de gestão em saúde. Seus dados não saem do seu computador." />
     <title>Painel Saúde</title>
+    <link rel="preload" as="image" href="/3d/robo-provisorio.svg" fetchpriority="high" />
     <script src="/tema-inicial.js"></script>
-    <script type="module" src="/src/main.ts"></script>
+    <script type="module" src="/src/landing/main.ts"></script>
   </head>
-  <body>
-    <main class="inicio">
-      <h1 class="inicio__titulo">Painel Saúde</h1>
-      <p class="inicio__subtitulo">Em construção.</p>
+  <body class="landing">
+    <a class="pular" href="#conteudo">Pular para o conteúdo</a>
+
+    <!-- Fundo de formas desfocadas. Decorativo; para junto com a pausa e com "reduzir movimento". -->
+    <div class="fundo-blur" aria-hidden="true">
+      <span class="fundo-blur__forma fundo-blur__forma--1"></span>
+      <span class="fundo-blur__forma fundo-blur__forma--2"></span>
+      <span class="fundo-blur__forma fundo-blur__forma--3"></span>
+    </div>
+
+    <!-- Camada de navegação: raiz única do vidro. A faixa de fundo e a barra de vidro são filhos diretos. -->
+    <div class="camada-nav" id="camada-nav">
+      <div class="faixa faixa--topo" aria-hidden="true"></div>
+      <header class="vidro barra-landing">
+        <a class="marca barra-landing__marca" href="/">
+          <img class="selo-robo" src="/3d/robo-provisorio.svg" alt="" width="28" height="28" />
+          Painel Saúde
+        </a>
+        <a class="botao botao--primario barra-landing__acao" href="/painel/">Ver o painel de exemplo</a>
+      </header>
+    </div>
+
+    <main id="conteudo">
+      <section class="dobra" aria-labelledby="dobra-titulo">
+        <div class="dobra__texto">
+          <h1 class="dobra__titulo" id="dobra-titulo">Sua planilha vira um painel.</h1>
+          <p class="dobra__frase">Assistência, qualidade e operação do seu setor num lugar só, a partir da planilha que você já usa.</p>
+          <div class="dobra__acoes">
+            <a class="botao botao--primario botao--grande" href="/painel/">Ver o painel de exemplo</a>
+            <a class="botao botao--secundario botao--grande" href="#beta">Quero testar o beta</a>
+          </div>
+          <p class="dobra__privacidade">Seus dados não saem do seu computador.</p>
+        </div>
+
+        <!-- O robô é decorativo: tudo o que importa está no texto ao lado. -->
+        <figure class="robo" id="robo" aria-hidden="true">
+          <img class="robo__poster" src="/3d/robo-provisorio.svg" alt="" width="640" height="720" fetchpriority="high" />
+        </figure>
+
+        <button class="botao pausa" id="pausa" type="button" aria-pressed="false">Pausar animação</button>
+      </section>
+
+      <section class="chamada" id="beta" aria-labelledby="beta-titulo">
+        <img class="selo-robo selo-robo--grande" src="/3d/robo-provisorio.svg" alt="" width="72" height="72" />
+        <h2 class="chamada__titulo" id="beta-titulo">Quero testar o beta</h2>
+        <p class="chamada__texto">As inscrições para o beta abrem em breve.</p>
+      </section>
     </main>
+
+    <footer class="rodape-landing">
+      <img class="selo-robo" src="/3d/robo-provisorio.svg" alt="" width="32" height="32" />
+      <p class="rodape-landing__aviso">Ferramenta de gestão. Não faz diagnóstico e não indica conduta.</p>
+    </footer>
   </body>
 </html>

@@ -178,31 +178,6 @@
 
 /* ---------- indicadores ---------- */
 
-.palco-indicadores {
-  display: grid;
-  gap: var(--espaco-4);
-}
-
-.palco-indicadores__periodo {
-  font-weight: var(--peso-semi);
-}
-
-.grade-painel {
-  display: grid;
-  gap: var(--espaco-4);
-}
-
-.grade-painel__coluna {
-  display: grid;
-  gap: var(--espaco-4);
-}
-
-@media (min-width: 960px) {
-  .grade-painel {
-    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
-  }
-}
-
 .lista-simples {
   margin: 0;
   padding-left: var(--espaco-6);

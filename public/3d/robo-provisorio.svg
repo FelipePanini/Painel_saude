@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 720" role="img" aria-label="Robô do Painel Saúde">
+  <!-- Robô provisório, desenhado para o projeto. Some quando chegar o modelo do Spline. -->
+  <defs>
+    <linearGradient id="corpo" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffffff" />
+      <stop offset="1" stop-color="#dbe3ea" />
+    </linearGradient>
+    <linearGradient id="visor" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1b2f3b" />
+      <stop offset="1" stop-color="#0b161d" />
+    </linearGradient>
+  </defs>
+  <ellipse cx="320" cy="688" rx="170" ry="18" fill="#10202b" opacity="0.08" />
+  <!-- antena com luz de status -->
+  <rect x="312" y="70" width="16" height="64" rx="8" fill="#0b6b8a" />
+  <circle cx="320" cy="62" r="20" fill="#e6b54a" />
+  <!-- cabeça -->
+  <rect x="150" y="122" width="340" height="250" rx="120" fill="url(#corpo)" stroke="#c9d4dd" stroke-width="4" />
+  <rect x="192" y="182" width="256" height="130" rx="65" fill="url(#visor)" />
+  <rect x="238" y="226" width="44" height="44" rx="22" fill="#5cc4e2" />
+  <rect x="358" y="226" width="44" height="44" rx="22" fill="#5cc4e2" />
+  <!-- braços -->
+  <rect x="96" y="420" width="64" height="190" rx="32" fill="url(#corpo)" stroke="#c9d4dd" stroke-width="4" />
+  <rect x="480" y="420" width="64" height="190" rx="32" fill="url(#corpo)" stroke="#c9d4dd" stroke-width="4" />
+  <!-- corpo -->
+  <rect x="180" y="392" width="280" height="270" rx="110" fill="url(#corpo)" stroke="#c9d4dd" stroke-width="4" />
+  <!-- "+" arredondado no peito, em azul-petróleo -->
+  <rect x="302" y="462" width="36" height="112" rx="18" fill="#0b6b8a" />
+  <rect x="264" y="500" width="112" height="36" rx="18" fill="#0b6b8a" />
+</svg>

@@ -1,0 +1,318 @@
+/* Landing page. Só tokens de tokens.css; os tokens que faltavam foram criados lá, nos dois temas. */
+
+.landing {
+  overflow-x: clip;
+}
+
+/* Link "Pular para o conteúdo": aparece ao receber foco pelo teclado. */
+.pular {
+  position: absolute;
+  left: var(--espaco-4);
+  top: -100px;
+  z-index: 30;
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--alvo-de-toque);
+  padding: 0 var(--espaco-4);
+  border-radius: var(--raio-controle);
+  background: var(--cor-superficie);
+  color: var(--cor-texto);
+  font-weight: var(--peso-semi);
+}
+
+.pular:focus {
+  top: var(--espaco-4);
+}
+
+/* ---------- fundo de formas desfocadas ---------- */
+
+.fundo-blur {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.fundo-blur__forma {
+  position: absolute;
+  width: 46vmax;
+  height: 46vmax;
+  border-radius: 50%;
+  filter: blur(var(--landing-desfoque));
+  opacity: var(--landing-forma-opacidade);
+  animation: deriva var(--landing-deriva-duracao) ease-in-out infinite alternate;
+}
+
+.fundo-blur__forma--1 {
+  top: -14vmax;
+  left: -10vmax;
+  background: var(--landing-forma-1);
+}
+
+.fundo-blur__forma--2 {
+  top: 8vmax;
+  right: -16vmax;
+  background: var(--landing-forma-2);
+  animation-delay: calc(var(--landing-deriva-duracao) / -3);
+}
+
+.fundo-blur__forma--3 {
+  bottom: -20vmax;
+  left: 20vw;
+  background: var(--landing-forma-3);
+  animation-delay: calc(var(--landing-deriva-duracao) / -1.5);
+}
+
+/* Movimento lento e pequeno: a forma anda uns 4% da tela, sem giro nem zoom forte. */
+@keyframes deriva {
+  to {
+    translate: 4vw 3vh;
+  }
+}
+
+:root[data-pausado='sim'] .fundo-blur__forma {
+  animation-play-state: paused;
+}
+
+/* ---------- barra de navegação da landing ---------- */
+
+.barra-landing {
+  position: absolute;
+  top: 14px;
+  left: 50%;
+  translate: -50% 0;
+  width: min(100% - 32px, var(--largura-pagina));
+  min-height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--espaco-4);
+  padding: 6px 8px 6px 14px;
+  border-radius: var(--raio-barra);
+}
+
+.barra-landing__marca {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--espaco-2);
+  min-height: var(--alvo-de-toque);
+  color: inherit;
+  text-decoration: none;
+}
+
+.barra-landing__acao {
+  border-radius: calc(var(--raio-barra) - 6px);
+}
+
+@media (max-width: 479px) {
+  .barra-landing__acao {
+    padding: 0 var(--espaco-3);
+    font-size: var(--texto-sm);
+  }
+}
+
+.selo-robo {
+  display: block;
+  flex: none;
+}
+
+/* ---------- botões da landing ---------- */
+
+a.botao {
+  text-decoration: none;
+}
+
+.botao--grande {
+  min-height: 52px;
+  padding: 0 var(--espaco-6);
+  font-size: var(--texto-md);
+}
+
+/* ---------- primeira dobra ---------- */
+
+.dobra {
+  position: relative;
+  display: grid;
+  grid-template-areas:
+    'robo'
+    'texto'
+    'pausa';
+  gap: var(--espaco-6);
+  max-width: var(--largura-pagina);
+  min-height: 100svh;
+  margin: 0 auto;
+  padding: calc(var(--altura-faixa) + var(--espaco-4)) var(--espaco-4) var(--espaco-8);
+  align-content: center;
+}
+
+.dobra__texto {
+  grid-area: texto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--espaco-4);
+}
+
+.dobra__titulo {
+  font-size: var(--landing-titulo);
+  font-weight: var(--peso-forte);
+  letter-spacing: var(--entreletra-titulo);
+  line-height: 1.02;
+  text-wrap: balance;
+}
+
+.dobra__frase {
+  max-width: 34rem;
+  color: var(--cor-texto-suave);
+  font-size: var(--texto-md);
+  line-height: 1.5;
+}
+
+.dobra__acoes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--espaco-3);
+  margin-top: var(--espaco-2);
+}
+
+.dobra__privacidade {
+  color: var(--cor-texto-suave);
+  font-size: var(--texto-sm);
+  font-weight: var(--peso-medio);
+}
+
+/* O robô: o pôster e o canvas ocupam exatamente o mesmo espaço, então nada pula quando o 3D entra. */
+.robo {
+  grid-area: robo;
+  position: relative;
+  /* No celular, menor, para o título caber na primeira tela. */
+  width: min(62%, 16rem);
+  aspect-ratio: 8 / 9;
+  margin: 0 auto;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.robo__poster,
+.robo__canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.robo__poster {
+  object-fit: contain;
+  transition: opacity var(--duracao-lenta) var(--curva-saida);
+}
+
+/* Sem 3D, o pôster flutua devagar só com CSS. */
+:root:not([data-robo='vivo']) .robo__poster {
+  animation: flutuar calc(var(--landing-deriva-duracao) / 4) ease-in-out infinite alternate;
+}
+
+:root[data-pausado='sim'] .robo__poster {
+  animation-play-state: paused;
+}
+
+@keyframes flutuar {
+  to {
+    translate: 0 -10px;
+  }
+}
+
+.robo__canvas {
+  display: block;
+  opacity: 0;
+  transition: opacity var(--duracao-lenta) var(--curva-saida);
+}
+
+:root[data-robo='vivo'] .robo__canvas {
+  opacity: 1;
+}
+
+:root[data-robo='vivo'] .robo__poster {
+  opacity: 0;
+}
+
+.pausa {
+  grid-area: pausa;
+  justify-self: start;
+  background: var(--cor-superficie);
+  box-shadow: var(--sombra-cartao);
+}
+
+@media (min-width: 960px) {
+  .dobra {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-areas:
+      'texto robo'
+      'pausa robo';
+    align-items: center;
+    column-gap: var(--espaco-8);
+    padding-left: var(--espaco-8);
+    padding-right: var(--espaco-8);
+  }
+
+  .dobra__texto {
+    align-self: end;
+  }
+
+  .pausa {
+    align-self: start;
+  }
+
+  .robo {
+    width: 100%;
+    max-width: 36rem;
+  }
+}
+
+/* ---------- chamada final e rodapé ---------- */
+
+.chamada {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--espaco-3);
+  max-width: 40rem;
+  margin: 0 auto;
+  padding: var(--espaco-16) var(--espaco-4);
+  text-align: center;
+  scroll-margin-top: var(--altura-faixa);
+}
+
+.chamada__titulo {
+  font-size: var(--texto-2xl);
+  font-weight: var(--peso-forte);
+  letter-spacing: var(--entreletra-titulo);
+}
+
+.chamada__texto {
+  color: var(--cor-texto-suave);
+  font-size: var(--texto-md);
+}
+
+.rodape-landing {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--espaco-2);
+  padding: var(--espaco-8) var(--espaco-4) var(--espaco-12);
+  border-top: 1px solid var(--cor-borda);
+  text-align: center;
+}
+
+.rodape-landing__aviso {
+  color: var(--cor-texto-suave);
+  font-size: var(--texto-sm);
+}
+
+/* Com "reduzir movimento": nada se mexe sozinho. */
+@media (prefers-reduced-motion: reduce) {
+  .fundo-blur__forma,
+  .robo__poster {
+    animation: none !important;
+  }
+}

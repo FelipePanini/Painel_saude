@@ -1,5 +1,5 @@
 /// <reference types="vitest/config" />
-import { readFileSync } from 'node:fs'
+import { existsSync, readFileSync } from 'node:fs'
 import { defineConfig, type Plugin } from 'vite'
 
 // Lê os cabeçalhos de public/_headers (formato do Cloudflare Pages e do Netlify).
@@ -38,13 +38,22 @@ function cabecalhosDeProducao(): Plugin {
 
 export default defineConfig({
   plugins: [cabecalhosDeProducao()],
+  define: {
+    // A landing usa o robô do Spline (public/3d/robo.glb) quando o arquivo existe; senão, o robô provisório.
+    __ROBO_GLB__: JSON.stringify(existsSync('public/3d/robo.glb')),
+  },
   build: {
     // Evita CSS ou scripts embutidos no HTML, que a CSP bloquearia.
     assetsInlineLimit: 0,
     rolldownOptions: {
       // O protótipo das entrevistas entra no build para ser testado com a CSP de produção.
       // Remover esta entrada (e a pasta prototipo/) antes do lançamento.
-      input: { principal: 'index.html', prototipo: 'prototipo/index.html', componentes: 'componentes/index.html' },
+      input: {
+        landing: 'index.html',
+        painel: 'painel/index.html',
+        componentes: 'componentes/index.html',
+        prototipo: 'prototipo/index.html',
+      },
     },
   },
   test: {

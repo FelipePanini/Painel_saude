@@ -15,5 +15,5 @@
     "skipLibCheck": true,
     "noEmit": true
   },
-  "include": ["src", "prototipo", "componentes", "tests", "vite.config.ts", "playwright.config.ts", "eslint.config.js"]
+  "include": ["src", "painel", "prototipo", "componentes", "tests", "vite.config.ts", "playwright.config.ts", "eslint.config.js"]
 }

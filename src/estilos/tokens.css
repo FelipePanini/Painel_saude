@@ -96,6 +96,15 @@
   --vidro-realce: rgb(16 32 43 / 0.06);
   --vidro-ativo: rgb(255 255 255 / 0.75);
   --vidro-destaque: #0b6b8a;
+
+  /* ---------- landing ---------- */
+  --landing-titulo: clamp(2.75rem, 1.4rem + 5.4vw, 5.75rem);
+  --landing-desfoque: 80px;
+  --landing-forma-opacidade: 0.7;
+  --landing-forma-1: #b9e2f0;
+  --landing-forma-2: #ccd9ff;
+  --landing-forma-3: #cdefe0;
+  --landing-deriva-duracao: 24s;
 }
 
 :root[data-tema='escuro'] {
@@ -135,6 +144,11 @@
   --vidro-realce: rgb(255 255 255 / 0.08);
   --vidro-ativo: rgb(255 255 255 / 0.14);
   --vidro-destaque: #5cc4e2;
+
+  --landing-forma-opacidade: 0.55;
+  --landing-forma-1: #10465a;
+  --landing-forma-2: #1b3472;
+  --landing-forma-3: #114436;
 }
 
 /* Com "reduzir movimento" ligado no sistema, as durações viram zero e as animações somem. */

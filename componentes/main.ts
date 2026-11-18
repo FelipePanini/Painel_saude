@@ -10,16 +10,15 @@ import '../src/estilos/componentes.css'
 import '../src/estilos/navegacao.css'
 import '../src/vidro/vidro.css'
 import './galeria.css'
-import type { Chart } from 'chart.js'
 import { Database, Download, LayoutDashboard, Settings, Trash2, Upload } from 'lucide'
 import { aviso, botao, campoTexto, chip, esqueleto, estado, mostrarToast, segmentado, seletor } from '../src/componentes/controles'
 import { el } from '../src/componentes/dom'
-import { cartaoCompacto, cartaoDestaque } from '../src/componentes/indicador'
+import { cartaoCompacto } from '../src/componentes/indicador'
 import { montarNavegacao } from '../src/componentes/navegacao'
 import { fonteDeDados } from '../src/fonte-de-dados'
-import { capitalizar, formatar } from '../src/formatar'
 import { aoMudarTema, definirTema, type Tema } from '../src/tema'
 import type { Filtros } from '../src/tipos/dominio'
+import { criarVisaoGeral } from '../src/ui/visaoGeral'
 import type { Aparencia } from '../src/vidro/vidro'
 
 const parametros = new URLSearchParams(location.search)
@@ -33,12 +32,9 @@ const estadoDaPagina = {
   tema: umDe<Tema>(parametros.get('tema'), ['sistema', 'claro', 'escuro'], 'sistema'),
   vidro: umDe<Aparencia>(parametros.get('vidro'), ['vidro', 'css', 'solida'], 'vidro'),
   filtros: { mes: meses[meses.length - 1]!, setorId: 'todos' } as Filtros,
-  /** O indicador que ocupa o cartão grande. */
-  destaqueId: null as string | null,
 }
 
 const secoes = document.getElementById('secoes')!
-let graficoAtual: Chart | null = null
 
 function secao(id: string, titulo: string, descricao: string, ...conteudo: (Node | null)[]) {
   return el(
@@ -220,47 +216,15 @@ const secaoFiltros = secao(
   }),
 )
 
-const palcoDosIndicadores = el('div', { class: 'palco-indicadores' })
+const visaoGeral = criarVisaoGeral(meses, setores)
 const secaoIndicadores = secao(
   'indicadores',
   'Cartões de indicador',
   'Um indicador em destaque, com o gráfico de 12 meses, e os outros ao lado. Os filtros de mês e de setor, na barra do topo, mudam estes cartões na hora.',
-  palcoDosIndicadores,
+  visaoGeral.elemento,
 )
 
-async function desenharIndicadores() {
-  graficoAtual?.destroy()
-  graficoAtual = null
-  const { filtros } = estadoDaPagina
-  const [resumos, frases] = await Promise.all([fonteDeDados.resumo(filtros), fonteDeDados.frases(filtros)])
-  const mesAnterior = meses[meses.indexOf(filtros.mes) - 1] ?? null
-  const setor = filtros.setorId === 'todos' ? 'Todos os setores' : (setores.find((s) => s.id === filtros.setorId)?.nome ?? '')
-  const destaque =
-    resumos.find((r) => r.indicador.id === estadoDaPagina.destaqueId) ?? resumos.find((r) => r.situacao === 'fora-da-meta') ?? resumos[0]!
-  const grande = cartaoDestaque(destaque, mesAnterior)
-  const compactos = resumos
-    .filter((r) => r !== destaque)
-    .map((r) =>
-      cartaoCompacto(r, mesAnterior, () => {
-        estadoDaPagina.destaqueId = r.indicador.id
-        void desenharIndicadores()
-      }),
-    )
-
-  palcoDosIndicadores.replaceChildren(
-    el('p', { class: 'palco-indicadores__periodo', texto: `${capitalizar(formatar.mesComAno(filtros.mes))} · ${setor}${mesAnterior ? `, comparado a ${formatar.mes(mesAnterior)}` : ''}` }),
-    el('div', { class: 'grade-painel' }, grande.elemento, el('div', { class: 'grade-painel__coluna' }, ...compactos)),
-    el(
-      'section',
-      { class: 'mudancas' },
-      el('h3', { class: 'mudancas__titulo', texto: 'O que mudou' }),
-      frases.length
-        ? el('ul', { class: 'mudancas__lista' }, ...frases.map((f) => el('li', { texto: f })))
-        : el('p', { class: 'sem-dados', texto: 'Nenhuma mudança importante neste mês.' }),
-    ),
-  )
-  graficoAtual = grande.iniciarGrafico()
-}
+const desenharIndicadores = () => visaoGeral.desenhar(estadoDaPagina.filtros)
 
 const secaoAvisos = secao(
   'avisos',

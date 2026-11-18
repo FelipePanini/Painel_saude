@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="robots" content="noindex" />
+    <title>Painel · Painel Saúde</title>
+    <script src="/tema-inicial.js"></script>
+    <script type="module" src="/src/ui/painel.ts"></script>
+  </head>
+  <body>
+    <!-- A camada de navegação (raiz do vidro) é montada por src/ui/painel.ts e entra aqui, antes do conteúdo. -->
+    <main class="pagina com-navegacao" id="conteudo">
+      <header class="painel__cabecalho">
+        <h1 class="painel__titulo">Painel</h1>
+        <p class="painel__aviso">Painel de exemplo, com dados fictícios. Setores e números são inventados.</p>
+      </header>
+      <div id="visao"></div>
+    </main>
+  </body>
+</html>
