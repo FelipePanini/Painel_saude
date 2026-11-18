@@ -21,9 +21,13 @@ export interface Meta {
   tipo: 'ate' | 'minimo'
 }
 
+export type Grupo = 'assistencia' | 'qualidade' | 'operacao'
+
 export interface Indicador {
   id: string
   nome: string
+  /** Área de gestão a que o indicador pertence. */
+  grupo: Grupo
   /** Texto curto que acompanha o número, por exemplo "por 1.000 pacientes-dia". */
   unidade: string
   /** "taxa" mostra uma casa decimal; "percentual" mostra número inteiro com %. */

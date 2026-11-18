@@ -52,6 +52,105 @@
         <button class="botao pausa" id="pausa" type="button" aria-pressed="false">Pausar animação</button>
       </section>
 
+      <section class="secao-landing sequencia" id="como-funciona" aria-labelledby="sequencia-titulo">
+        <header class="secao-landing__cabecalho revelar">
+          <h2 class="secao-landing__titulo" id="sequencia-titulo">Da planilha ao painel.</h2>
+          <p class="secao-landing__frase">Você usa a planilha que já tem. A ferramenta encontra as colunas e monta o painel.</p>
+        </header>
+        <div class="sequencia__corpo">
+          <!-- Ilustração: a planilha vira cartões e depois um gráfico. O sentido está nos passos ao lado. -->
+          <div class="sequencia__palco" id="palco" data-passo="1" aria-hidden="true">
+            <div class="palco__camada palco__camada--planilha" id="palco-planilha"></div>
+            <div class="palco__camada palco__camada--cartoes" id="palco-cartoes"></div>
+            <div class="palco__camada palco__camada--grafico" id="palco-grafico"></div>
+          </div>
+          <ol class="sequencia__passos">
+            <li class="passo" data-passo="1">
+              <p class="passo__numero">Passo 1</p>
+              <h3 class="passo__titulo">Importe</h3>
+              <p class="passo__texto">Arraste a planilha do mês, em .xlsx ou .csv.</p>
+            </li>
+            <li class="passo" data-passo="2">
+              <p class="passo__numero">Passo 2</p>
+              <h3 class="passo__titulo">Confira as colunas</h3>
+              <p class="passo__texto">A ferramenta sugere o que é cada coluna. Você confirma ou troca.</p>
+            </li>
+            <li class="passo" data-passo="3">
+              <p class="passo__numero">Passo 3</p>
+              <h3 class="passo__titulo">Veja o painel</h3>
+              <p class="passo__texto">Os números do mês aparecem prontos, comparados com o mês anterior.</p>
+            </li>
+          </ol>
+        </div>
+      </section>
+
+      <section class="secao-landing" id="indicadores" aria-labelledby="indicadores-titulo">
+        <header class="secao-landing__cabecalho revelar">
+          <h2 class="secao-landing__titulo" id="indicadores-titulo">Assistência, qualidade e operação.</h2>
+          <p class="secao-landing__frase">Cada área com os seus números, a meta e a tendência dos últimos meses.</p>
+        </header>
+        <div class="grupos" id="grupos"></div>
+        <p class="secao-landing__nota">Exemplos com dados fictícios.</p>
+      </section>
+
+      <section class="secao-landing privacidade" id="privacidade" aria-labelledby="privacidade-titulo">
+        <div class="privacidade__conteudo revelar">
+          <img class="selo-robo" src="/3d/robo-provisorio.svg" alt="" width="48" height="48" />
+          <h2 class="secao-landing__titulo" id="privacidade-titulo">Fica tudo no seu computador.</h2>
+          <ul class="privacidade__lista">
+            <li>A planilha é lida no seu navegador, sem passar por um servidor.</li>
+            <li>Os números ficam guardados neste aparelho. Nada é enviado pela internet.</li>
+            <li>Um modo para computador compartilhado, que apaga tudo ao fechar a aba, está nos planos.</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="secao-landing" id="para-todos" aria-labelledby="para-todos-titulo">
+        <header class="secao-landing__cabecalho revelar">
+          <h2 class="secao-landing__titulo" id="para-todos-titulo">Feito para todo mundo.</h2>
+          <p class="secao-landing__frase">Texto maior, tema claro ou escuro e menos movimento quando o seu aparelho pede. Experimente aqui.</p>
+        </header>
+        <div class="demo" id="demo"></div>
+      </section>
+
+      <section class="secao-landing vidro-demo" id="vidro" aria-labelledby="vidro-titulo">
+        <header class="secao-landing__cabecalho revelar">
+          <h2 class="secao-landing__titulo" id="vidro-titulo">Vidro só onde ajuda.</h2>
+          <p class="secao-landing__frase">A barra de navegação flutua sobre a página com um efeito de vidro. Números, gráficos e tabelas ficam em superfícies firmes, fáceis de ler.</p>
+        </header>
+        <div class="recorte revelar" aria-hidden="true">
+          <span class="recorte__forma recorte__forma--1"></span>
+          <span class="recorte__forma recorte__forma--2"></span>
+          <div class="recorte__barra">
+            <span class="recorte__marca">Painel Saúde</span>
+            <span class="recorte__item recorte__item--ativo">Painel</span>
+            <span class="recorte__item">Dados</span>
+            <span class="recorte__item recorte__item--escondido">Preferências</span>
+            <span class="recorte__botao">Adicionar dados</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="secao-landing" id="para-quem" aria-labelledby="para-quem-titulo">
+        <header class="secao-landing__cabecalho revelar">
+          <h2 class="secao-landing__titulo" id="para-quem-titulo">Para quem cuida da gestão.</h2>
+        </header>
+        <ul class="publicos">
+          <li class="publico revelar">
+            <h3 class="publico__titulo">Coordenação de enfermagem</h3>
+            <p>Fecha o mês do setor e vê na hora o que ficou dentro da meta.</p>
+          </li>
+          <li class="publico revelar">
+            <h3 class="publico__titulo">Gestão de unidade</h3>
+            <p>Compara os setores lado a lado e leva para a reunião um painel que todo mundo entende.</p>
+          </li>
+          <li class="publico revelar">
+            <h3 class="publico__titulo">Núcleo de qualidade</h3>
+            <p>Junta os números de vários setores sem montar gráfico à mão.</p>
+          </li>
+        </ul>
+      </section>
+
       <section class="chamada" id="beta" aria-labelledby="beta-titulo">
         <img class="selo-robo selo-robo--grande" src="/3d/robo-provisorio.svg" alt="" width="72" height="72" />
         <h2 class="chamada__titulo" id="beta-titulo">Quero testar o beta</h2>

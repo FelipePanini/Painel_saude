@@ -46,7 +46,10 @@ export function criarVisaoGeral(meses: Mes[], setores: Setor[]) {
           : el('p', { class: 'sem-dados', texto: 'Nenhuma mudança importante neste mês.' }),
       ),
     )
-    grafico = grande.iniciarGrafico()
+    const novo = await grande.iniciarGrafico()
+    // Se outro desenho começou enquanto o Chart.js carregava, este gráfico já não vale.
+    if (ultimosFiltros !== filtros) novo?.destroy()
+    else grafico = novo
   }
 
   return { elemento, desenhar }

@@ -13,6 +13,8 @@ import { aoMudarTema } from '../tema'
 import { aplicarAparencia } from '../vidro/vidro'
 import { iniciarRobo } from './carregarRobo'
 import { criarPausa } from './pausa'
+import { iniciarRevelacoes } from './revelar'
+import { montarSecoes } from './secoes'
 
 const caixaDoRobo = document.getElementById('robo')!
 const botaoPausa = document.querySelector<HTMLButtonElement>('#pausa')!
@@ -33,3 +35,7 @@ async function aplicarVidro() {
 }
 aoMudarTema(() => void aplicarVidro())
 void aplicarVidro()
+
+// Seções com dados: montadas depois da primeira dobra, sem atrasar o robô nem o título.
+const observarRevelacoes = iniciarRevelacoes()
+void montarSecoes().then(() => observarRevelacoes?.())

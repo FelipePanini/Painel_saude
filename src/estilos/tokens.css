@@ -4,7 +4,8 @@
  * O tema escuro troca só os valores; os nomes são os mesmos.
  * <html data-tema="claro|escuro"> é definido por public/tema-inicial.js e por src/tema.ts.
  */
-:root {
+:root,
+[data-tema-local='claro'] {
   /* ---------- tipografia ---------- */
   /* Pilha do sistema, com Inter auto-hospedada. Em aparelhos Apple, o sistema mostra a fonte dele. */
   --fonte-texto: system-ui, -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, sans-serif;
@@ -105,9 +106,12 @@
   --landing-forma-2: #ccd9ff;
   --landing-forma-3: #cdefe0;
   --landing-deriva-duracao: 24s;
+  --landing-subtitulo: clamp(2rem, 1.2rem + 3.2vw, 3.75rem);
+  --landing-painel-texto: rgb(255 255 255 / 0.72); /* painel de texto curto sobre o fundo desfocado */
 }
 
-:root[data-tema='escuro'] {
+:root[data-tema='escuro'],
+[data-tema-local='escuro'] {
   --cor-fundo: #0b1115;
   --cor-superficie: #141c22;
   --cor-texto: #eef3f6;
@@ -149,6 +153,7 @@
   --landing-forma-1: #10465a;
   --landing-forma-2: #1b3472;
   --landing-forma-3: #114436;
+  --landing-painel-texto: rgb(20 28 34 / 0.72);
 }
 
 /* Com "reduzir movimento" ligado no sistema, as durações viram zero e as animações somem. */

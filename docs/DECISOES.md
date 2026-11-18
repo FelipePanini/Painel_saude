@@ -2,6 +2,22 @@
 
 Decisões não óbvias, com data. A mais recente fica no topo.
 
+## 18/11/2026: landing page 3D, fatia 2 (roteiro)
+
+- **Seções feitas:** da planilha ao painel (palco preso na tela), os indicadores por área, privacidade, feito para todo mundo, vidro só onde ajuda, para quem é, chamada final e rodapé. Os textos estão no HTML; os números vêm da fonte de dados.
+- **A vitrine (seção 7) foi para a fatia 3**, junto com as molduras e o `npm run vitrine`. Sem as capturas do painel, ela seria só molduras vazias.
+- **Grupos dos indicadores.** O tipo `Indicador` ganhou o campo `grupo` (assistência, qualidade ou operação). Quedas e lesão por pressão ficaram em Assistência, higiene das mãos em Qualidade, ocupação de leitos em Operação, todos marcados [VALIDAR COM A PROFESSORA]. O briefing pede dois ou três indicadores por área, mas o nicho de exemplo só tem quatro, e a regra é não inventar indicador.
+- **O Chart.js saiu do caminho da landing.** O cartão em destaque passou a carregar o gráfico grande sob demanda (`import()` dentro de `iniciarGrafico`). Assim a landing usa os cartões compactos de verdade sem baixar o Chart.js. O painel e a galeria continuam iguais.
+- **Tema local.** O seletor dos tokens claros também vale para `[data-tema-local='claro']`, e o dos escuros para `[data-tema-local='escuro']`. É assim que a demonstração troca o tema só do cartão de exemplo, sem mexer no resto da página.
+- **Palco da sequência.** No computador, o palco fica preso no meio da tela e os passos rolam ao lado. No celular, ele fica preso em cima, mais baixo (até 38% da tela), e o passo que conta é o que passa na faixa de baixo, onde ele aparece. Com "reduzir movimento", o palco deixa de ficar preso e os passos viram blocos comuns.
+- **Revelações ao rolar com CSS** (`animation-timeline: view()`), dentro de `@supports` e só sem "reduzir movimento". Navegadores sem suporte usam um IntersectionObserver (`src/landing/revelar.ts`). Sem JavaScript, tudo aparece direto.
+- **O fundo desfocado sobe devagar com a rolagem** (`animation-timeline: scroll()`). Ele é maior que a tela, para a borda de baixo não aparecer quando sobe. A pausa e "reduzir movimento" desligam esse movimento também.
+- **A barra da seção "Vidro só onde ajuda" é uma ilustração** na aparência CSS do vidro, sobre um fundo próprio, e não o vidro WebGL: um segundo vidro de verdade na mesma página seria vidro fora da navegação e mais um contexto WebGL.
+- **Hífen que não quebra** nos cartões pequenos do palco, para "pacientes-dia" não se partir no meio.
+- **Capturas de página inteira** agora são tiradas com "reduzir movimento". Numa foto da página inteira, os blocos que aparecem com a rolagem ainda não "entraram" e saíam em branco. A captura da primeira dobra continua com o movimento e o robô 3D.
+- **Testes novos:** a sequência troca a camada do palco a cada passo; os indicadores vêm da fonte de dados, agrupados por área; a demonstração aumenta o texto e troca o tema só do exemplo. O teste de teclado passou a contar também os grupos de opções (rádios), que o teclado alcança.
+- **Textos.** Escritos em linguagem simples e sem promessa que não dá para provar (por exemplo, o modo de computador compartilhado aparece como "está nos planos", sem data). A revisão formal com o Humanizer fica para a fatia 4, junto com a amostra de texto da professora.
+
 ## 18/11/2026: landing page 3D, fatia 1 (base e robô)
 
 - **O runtime do Spline foi descartado; o 3D usa o Three.js.** O `@splinetool/runtime` 2.0.194 não declara licença no `package.json`, não traz arquivo de licença, e o repositório indicado não é público. Sem licença, valem "todos os direitos reservados", e o briefing manda parar nesse caso. O código dele também traz endereços de `apis.spline.design`, `cdn.spline.design`, `hooks.spline.design`, `relayserver.spline.design`, `www.gstatic.com` (decodificador Draco) e `fonts.gstatic.com`. O Felipe aprovou trocar pelo **Three.js 0.187 (licença MIT)**, com as cenas exportadas do Spline em **GLB**, sem Draco.

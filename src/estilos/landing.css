@@ -28,7 +28,8 @@
 
 .fundo-blur {
   position: fixed;
-  inset: 0;
+  /* Maior que a tela: quando o fundo sobe com a rolagem, a borda de baixo não aparece. */
+  inset: -5vh 0 -20vh;
   z-index: -1;
   overflow: hidden;
   pointer-events: none;
@@ -314,5 +315,570 @@ a.botao {
   .fundo-blur__forma,
   .robo__poster {
     animation: none !important;
+  }
+}
+
+/* ======================================================================
+   Seções 2 a 8 (fatia 2)
+   ====================================================================== */
+
+.secao-landing {
+  max-width: var(--largura-pagina);
+  margin: 0 auto;
+  padding: var(--espaco-16) var(--espaco-4);
+  scroll-margin-top: var(--altura-faixa);
+}
+
+@media (min-width: 960px) {
+  .secao-landing {
+    padding: calc(var(--espaco-16) * 1.5) var(--espaco-8);
+  }
+}
+
+.secao-landing__cabecalho {
+  max-width: 44rem;
+  margin-bottom: var(--espaco-8);
+}
+
+.secao-landing__titulo {
+  font-size: var(--landing-subtitulo);
+  font-weight: var(--peso-forte);
+  letter-spacing: var(--entreletra-titulo);
+  line-height: 1.05;
+  text-wrap: balance;
+}
+
+.secao-landing__frase {
+  margin-top: var(--espaco-4);
+  color: var(--cor-texto-suave);
+  font-size: var(--texto-md);
+  line-height: 1.5;
+}
+
+.secao-landing__nota {
+  margin-top: var(--espaco-4);
+  color: var(--cor-texto-suave);
+  font-size: var(--texto-sm);
+}
+
+/* ---------- 2. da planilha ao painel: palco preso na tela ---------- */
+
+.sequencia__corpo {
+  display: grid;
+  gap: var(--espaco-6);
+}
+
+.sequencia__palco {
+  position: sticky;
+  top: calc(var(--altura-faixa) + var(--espaco-2));
+  z-index: 1;
+  height: min(38vh, 18rem);
+  border-radius: var(--raio-cartao);
+  background: var(--cor-superficie);
+  box-shadow: var(--sombra-flutuante);
+  overflow: hidden;
+}
+
+.palco__camada {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: var(--espaco-4);
+  opacity: 0;
+  translate: 0 16px;
+  transition:
+    opacity var(--duracao-lenta) var(--curva-saida),
+    translate var(--duracao-lenta) var(--curva-saida);
+}
+
+.sequencia__palco[data-passo='1'] .palco__camada--planilha,
+.sequencia__palco[data-passo='2'] .palco__camada--cartoes,
+.sequencia__palco[data-passo='3'] .palco__camada--grafico {
+  opacity: 1;
+  translate: 0 0;
+}
+
+.planilha {
+  width: 100%;
+  max-width: 30rem;
+  border-radius: var(--raio-controle);
+  background: var(--cor-fundo);
+  box-shadow: inset 0 0 0 1px var(--cor-borda);
+  overflow: hidden;
+}
+
+.planilha__arquivo {
+  padding: var(--espaco-2) var(--espaco-3);
+  border-bottom: 1px solid var(--cor-borda);
+  color: var(--cor-texto-suave);
+  font-size: var(--texto-sm);
+  font-weight: var(--peso-medio);
+}
+
+.planilha table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--texto-sm);
+}
+
+.planilha th,
+.planilha td {
+  padding: 6px var(--espaco-3);
+  border-bottom: 1px solid var(--cor-borda);
+  text-align: right;
+  white-space: nowrap;
+}
+
+.planilha th:first-child,
+.planilha td:first-child {
+  overflow: hidden;
+  max-width: 9rem;
+  text-align: left;
+  text-overflow: ellipsis;
+}
+
+.planilha th {
+  background: var(--cor-preenchimento);
+  font-weight: var(--peso-semi);
+}
+
+.cartoes-mini {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--espaco-3);
+  width: 100%;
+  max-width: 30rem;
+}
+
+.cartao-mini {
+  padding: var(--espaco-3);
+  border-radius: var(--raio-controle);
+  background: var(--cor-fundo);
+  box-shadow: inset 0 0 0 1px var(--cor-borda);
+}
+
+.cartao-mini__nome,
+.cartao-mini__unidade {
+  color: var(--cor-texto-suave);
+  font-size: var(--texto-xs);
+}
+
+.cartao-mini__nome {
+  font-weight: var(--peso-medio);
+}
+
+@media (max-width: 479px) {
+  .cartao-mini__unidade {
+    display: none;
+  }
+
+  /* Na planilha ilustrativa, só as três primeiras colunas cabem no celular. */
+  .planilha th:nth-child(4),
+  .planilha td:nth-child(4) {
+    display: none;
+  }
+}
+
+.cartao-mini__valor {
+  font-size: var(--texto-xl);
+  font-weight: var(--peso-numero);
+  letter-spacing: var(--entreletra-numero);
+  line-height: 1.2;
+}
+
+.grafico-palco {
+  width: 100%;
+  max-width: 30rem;
+}
+
+.grafico-palco__nome,
+.grafico-palco__legenda {
+  color: var(--cor-texto-suave);
+  font-size: var(--texto-sm);
+}
+
+.grafico-palco__valor {
+  font-size: var(--texto-2xl);
+  font-weight: var(--peso-numero);
+  letter-spacing: var(--entreletra-numero);
+  line-height: 1.1;
+}
+
+.grafico-palco .minigrafico {
+  height: 9rem;
+  margin: var(--espaco-3) 0 var(--espaco-2);
+}
+
+.sequencia__passos {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Cada passo ocupa boa parte da tela, para dar tempo de ver cada camada do palco. */
+.passo {
+  min-height: 60vh;
+  padding: var(--espaco-8) 0;
+  scroll-margin-top: 50vh;
+  opacity: 0.45;
+  transition: opacity var(--duracao-media) var(--curva-saida);
+}
+
+.passo--atual {
+  opacity: 1;
+}
+
+.passo__numero {
+  color: var(--cor-destaque);
+  font-size: var(--texto-sm);
+  font-weight: var(--peso-semi);
+}
+
+.passo__titulo {
+  margin-top: var(--espaco-1);
+  font-size: var(--texto-xl);
+  font-weight: var(--peso-forte);
+  letter-spacing: var(--entreletra-titulo);
+}
+
+.passo__texto {
+  max-width: 26rem;
+  margin-top: var(--espaco-2);
+  color: var(--cor-texto-suave);
+  font-size: var(--texto-md);
+}
+
+@media (min-width: 960px) {
+  .sequencia__corpo {
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    align-items: start;
+    gap: var(--espaco-12);
+  }
+
+  .sequencia__palco {
+    top: calc(50vh - 13rem);
+    height: 26rem;
+  }
+
+  .passo {
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+}
+
+/* ---------- 3. grupos de indicadores ---------- */
+
+.grupos {
+  display: grid;
+  gap: var(--espaco-8);
+}
+
+.grupo__titulo {
+  margin-bottom: var(--espaco-3);
+  color: var(--cor-destaque);
+  font-size: var(--texto-md);
+  font-weight: var(--peso-semi);
+}
+
+.grupo__cartoes {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 19rem), 1fr));
+  gap: var(--espaco-4);
+}
+
+@media (min-width: 960px) {
+  .grupos {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: start;
+  }
+
+  /* A assistência tem dois indicadores: ocupa a linha inteira, com os cartões lado a lado. */
+  .grupo:first-child {
+    grid-column: 1 / -1;
+  }
+}
+
+/* ---------- 4. privacidade ---------- */
+
+.privacidade__conteudo {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--espaco-4);
+  max-width: 46rem;
+  padding: var(--espaco-8) var(--espaco-6);
+  border-radius: var(--raio-cartao);
+  background: var(--landing-painel-texto);
+  -webkit-backdrop-filter: blur(24px) saturate(160%);
+  backdrop-filter: blur(24px) saturate(160%);
+  box-shadow: inset 0 0 0 1px var(--vidro-borda);
+}
+
+.privacidade__lista {
+  display: grid;
+  gap: var(--espaco-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: var(--texto-md);
+  line-height: 1.45;
+}
+
+.privacidade__lista li {
+  padding-left: var(--espaco-4);
+  border-left: 3px solid var(--cor-destaque);
+}
+
+@media (min-width: 960px) {
+  .privacidade__conteudo {
+    padding: var(--espaco-12);
+  }
+}
+
+/* ---------- 5. feito para todo mundo ---------- */
+
+.demo {
+  display: grid;
+  gap: var(--espaco-6);
+  align-items: start;
+}
+
+.demo__controles {
+  display: grid;
+  gap: var(--espaco-4);
+}
+
+.demo__vitrine {
+  padding: var(--espaco-6);
+  border-radius: var(--raio-cartao);
+  background: var(--cor-fundo);
+  box-shadow: inset 0 0 0 1px var(--cor-borda);
+  color: var(--cor-texto);
+  transition: background-color var(--duracao-media) var(--curva-saida);
+}
+
+/* O tamanho do texto muda só dentro do exemplo. */
+.demo__vitrine[data-tamanho='maior'] {
+  font-size: 1.2rem;
+}
+
+.demo__vitrine[data-tamanho='bem-maior'] {
+  font-size: 1.45rem;
+}
+
+.demo__vitrine .cartao__nome,
+.demo__vitrine .cartao__unidade,
+.demo__vitrine .selo,
+.demo__vitrine .variacao {
+  font-size: 1em;
+}
+
+.demo__vitrine .cartao__valor {
+  font-size: 2.2em;
+}
+
+@media (min-width: 960px) {
+  .demo {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  }
+}
+
+/* ---------- 6. vidro só onde ajuda ---------- */
+
+.recorte {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: 16rem;
+  padding: var(--espaco-8) var(--espaco-4);
+  border-radius: var(--raio-cartao);
+  background: var(--cor-fundo);
+  box-shadow: inset 0 0 0 1px var(--cor-borda);
+  overflow: hidden;
+}
+
+.recorte__forma {
+  position: absolute;
+  width: 18rem;
+  height: 18rem;
+  border-radius: 50%;
+  filter: blur(40px);
+  opacity: var(--landing-forma-opacidade);
+}
+
+.recorte__forma--1 {
+  left: 10%;
+  top: -6rem;
+  background: var(--landing-forma-1);
+}
+
+.recorte__forma--2 {
+  right: 8%;
+  bottom: -8rem;
+  background: var(--landing-forma-2);
+}
+
+/* Ilustração da barra do painel, na aparência CSS do vidro (não é o vidro de verdade). */
+.recorte__barra {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--espaco-2);
+  width: min(100%, 44rem);
+  min-height: 56px;
+  padding: 6px 8px 6px 20px;
+  border-radius: var(--raio-barra);
+  background: var(--vidro-fundo);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  backdrop-filter: blur(20px) saturate(180%);
+  box-shadow:
+    inset 0 0 0 1px var(--vidro-borda),
+    inset 0 1px 0 0 var(--vidro-brilho),
+    var(--vidro-sombra);
+  color: var(--vidro-texto);
+  font-weight: var(--peso-medio);
+}
+
+.recorte__marca {
+  margin-right: var(--espaco-2);
+  font-weight: var(--peso-forte);
+}
+
+.recorte__item {
+  padding: 10px 14px;
+  border-radius: calc(var(--raio-barra) - 6px);
+}
+
+.recorte__item--ativo {
+  background: var(--vidro-ativo);
+  font-weight: var(--peso-semi);
+}
+
+.recorte__botao {
+  margin-left: auto;
+  padding: 10px 18px;
+  border-radius: calc(var(--raio-barra) - 6px);
+  background: var(--cor-destaque);
+  color: var(--cor-destaque-texto);
+  font-weight: var(--peso-semi);
+  white-space: nowrap;
+}
+
+@media (max-width: 599px) {
+  .recorte__item--escondido,
+  .recorte__marca {
+    display: none;
+  }
+
+  .recorte__barra {
+    padding-left: 8px;
+  }
+
+  .recorte__item,
+  .recorte__botao {
+    padding: 10px 12px;
+    font-size: var(--texto-sm);
+  }
+}
+
+/* ---------- 8. para quem é ---------- */
+
+.publicos {
+  display: grid;
+  gap: var(--espaco-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.publico {
+  padding: var(--espaco-6);
+  border-radius: var(--raio-cartao);
+  background: var(--cor-superficie);
+  box-shadow: var(--sombra-cartao);
+}
+
+.publico__titulo {
+  margin-bottom: var(--espaco-2);
+  font-size: var(--texto-lg);
+  font-weight: var(--peso-semi);
+}
+
+.publico p {
+  color: var(--cor-texto-suave);
+}
+
+@media (min-width: 960px) {
+  .publicos {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+/* ---------- revelações ao rolar ---------- */
+
+@keyframes revelar {
+  from {
+    opacity: 0;
+    translate: 0 20px;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .revelar {
+      animation: revelar linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 45%;
+    }
+  }
+
+  /* Navegadores sem animação ligada à rolagem: o revelar.ts põe a classe "revelado". */
+  .revelar-com-js .revelar {
+    opacity: 0;
+    translate: 0 20px;
+    transition:
+      opacity var(--duracao-lenta) var(--curva-saida),
+      translate var(--duracao-lenta) var(--curva-saida);
+  }
+
+  .revelar-com-js .revelar.revelado {
+    opacity: 1;
+    translate: 0 0;
+  }
+
+  /* As formas do fundo sobem devagar enquanto a página rola. A rolagem é a do navegador. */
+  @supports (animation-timeline: scroll()) {
+    .fundo-blur {
+      animation: fundo-sobe linear both;
+      animation-timeline: scroll(root);
+    }
+
+    :root[data-pausado='sim'] .fundo-blur {
+      animation: none;
+    }
+  }
+}
+
+@keyframes fundo-sobe {
+  to {
+    translate: 0 -12vh;
+  }
+}
+
+/* ---------- reduzir movimento: a sequência vira blocos comuns ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .sequencia__palco {
+    position: relative;
+    top: auto;
+  }
+
+  .passo {
+    min-height: 0;
+    padding: var(--espaco-4) 0;
+    opacity: 1;
   }
 }

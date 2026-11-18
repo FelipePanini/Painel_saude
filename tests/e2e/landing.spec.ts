@@ -126,6 +126,52 @@ test.describe('robô 3D', () => {
   })
 })
 
+test.describe('seções da landing', () => {
+  test('a sequência troca a camada do palco a cada passo', async ({ page }) => {
+    await page.goto('/')
+    const palco = page.locator('#palco')
+    for (const passo of ['1', '2', '3']) {
+      await page.locator(`.passo[data-passo="${passo}"]`).scrollIntoViewIfNeeded()
+      await page.evaluate((n) => {
+        const e = document.querySelector(`.passo[data-passo="${n}"]`)!
+        const r = e.getBoundingClientRect()
+        const faixa = window.innerWidth >= 960 ? 0.5 : 0.74
+        window.scrollTo(0, window.scrollY + r.top + r.height / 2 - window.innerHeight * faixa)
+      }, passo)
+      await expect(palco).toHaveAttribute('data-passo', passo)
+    }
+  })
+
+  test('os indicadores vêm da fonte de dados, agrupados por área', async ({ page }) => {
+    await page.goto('/')
+    await expect(page.locator('#grupos .grupo')).toHaveCount(3)
+    await expect(page.locator('#grupos .grupo__titulo')).toHaveText(['Assistência', 'Qualidade', 'Operação'])
+    await expect(page.locator('#grupos .cartao')).toHaveCount(4)
+    // O número é o mesmo que o painel mostra para o mês mais recente.
+    await expect(page.locator('#grupos .cartao').first().locator('.cartao__valor')).toHaveAttribute('aria-label', /^\d+,\d$/)
+  })
+
+  test('a demonstração aumenta o texto e troca o tema só do exemplo', async ({ page }) => {
+    await page.emulateMedia({ colorScheme: 'dark' })
+    await page.goto('/')
+    const vitrine = page.locator('.demo__vitrine')
+    await expect(vitrine.locator('.cartao')).toHaveCount(1)
+    const tamanho = () => vitrine.locator('.cartao__nome').evaluate((e) => parseFloat(getComputedStyle(e).fontSize))
+    const normal = await tamanho()
+    await page.getByRole('radio', { name: 'Bem maior' }).check()
+    expect(await tamanho()).toBeGreaterThan(normal * 1.3)
+
+    const fundo = () => vitrine.evaluate((e) => getComputedStyle(e).backgroundColor)
+    const escuro = await fundo()
+    await page.getByRole('radio', { name: 'Claro' }).check()
+    // A cor muda com uma transição curta; espera ela terminar.
+    await expect.poll(fundo).toBe('rgb(242, 245, 248)')
+    expect(escuro).toBe('rgb(11, 17, 21)')
+    // A página continua no tema escuro.
+    await expect(page.locator('html')).toHaveAttribute('data-tema', 'escuro')
+  })
+})
+
 test.describe('acessibilidade básica da landing', () => {
   test('uma h1, títulos em ordem, alvos de 44 px e tudo alcançável pelo teclado com foco visível', async ({ page }) => {
     await page.emulateMedia({ reducedMotion: 'reduce' })
@@ -136,16 +182,20 @@ test.describe('acessibilidade básica da landing', () => {
     const niveis = await page.locator('h1, h2, h3, h4').evaluateAll((titulos) => titulos.map((t) => Number(t.tagName[1])))
     for (let i = 1; i < niveis.length; i++) expect(niveis[i]! - niveis[i - 1]!, `título pulando de nível: ${niveis.join(', ')}`).toBeLessThanOrEqual(1)
 
-    const interativos = page.locator('a[href], button')
-    const total = await interativos.count()
+    // Links e botões, mais um ponto por grupo de opções (o Tab entra no grupo e as setas escolhem).
+    const total =
+      (await page.locator('a[href], button').count()) +
+      (await page.locator('input[type="radio"]').evaluateAll((radios) => new Set(radios.map((r) => (r as HTMLInputElement).name)).size))
     const alcancados = new Set<string>()
     for (let i = 0; i < total + 2; i++) {
       await page.keyboard.press('Tab')
       const focado = await page.evaluate(() => {
         const e = document.activeElement as HTMLElement | null
         if (!e || e === document.body) return null
-        const estilo = getComputedStyle(e)
-        const caixa = e.getBoundingClientRect()
+        // No controle segmentado, o rádio é invisível e o foco aparece no rótulo ao lado dele.
+        const visivel = e instanceof HTMLInputElement && e.type === 'radio' ? (e.nextElementSibling as HTMLElement) : e
+        const estilo = getComputedStyle(visivel)
+        const caixa = visivel.getBoundingClientRect()
         return { id: e.outerHTML.slice(0, 80), contorno: estilo.outlineStyle, altura: caixa.height, largura: caixa.width }
       })
       if (!focado) continue
@@ -153,7 +203,7 @@ test.describe('acessibilidade básica da landing', () => {
       expect(focado.contorno, `sem foco visível em ${focado.id}`).not.toBe('none')
       expect(focado.altura, `alvo menor que 44 px: ${focado.id}`).toBeGreaterThanOrEqual(44)
     }
-    expect(alcancados.size, 'todos os links e botões precisam ser alcançáveis pelo teclado').toBe(total)
+    expect(alcancados.size, 'todos os links, botões e grupos de opções precisam ser alcançáveis pelo teclado').toBe(total)
   })
 })
 
@@ -175,6 +225,12 @@ test.describe('capturas da landing', () => {
         await page.waitForTimeout(600)
         const nome = `capturas/landing/${largura}-${tema === 'light' ? 'claro' : 'escuro'}`
         await page.screenshot({ path: `${nome}-dobra.png` })
+        // Na foto da página inteira, os blocos que aparecem com a rolagem ainda não "entraram".
+        // Por isso ela é tirada com "reduzir movimento", em que tudo aparece direto.
+        await page.emulateMedia({ colorScheme: tema, reducedMotion: 'reduce' })
+        await page.reload()
+        await vidroPronto(page)
+        await expect(page.locator('#grupos .cartao')).toHaveCount(4)
         await page.screenshot({ path: `${nome}-pagina.png`, fullPage: true })
       })
     }

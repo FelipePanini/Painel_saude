@@ -17,6 +17,7 @@ export const nichoExemplo: ConfiguracaoNicho = {
   indicadores: [
     {
       id: 'quedas',
+      grupo: 'assistencia', // [VALIDAR COM A PROFESSORA]
       nome: 'Quedas',
       unidade: 'por 1.000 pacientes-dia',
       formato: 'taxa',
@@ -27,6 +28,7 @@ export const nichoExemplo: ConfiguracaoNicho = {
     },
     {
       id: 'lesao',
+      grupo: 'assistencia', // [VALIDAR COM A PROFESSORA]
       nome: 'Lesão por pressão',
       unidade: 'por 1.000 pacientes-dia',
       formato: 'taxa',
@@ -37,6 +39,7 @@ export const nichoExemplo: ConfiguracaoNicho = {
     },
     {
       id: 'higiene',
+      grupo: 'qualidade', // [VALIDAR COM A PROFESSORA]
       nome: 'Higiene das mãos',
       unidade: 'de adesão',
       formato: 'percentual',
@@ -47,6 +50,7 @@ export const nichoExemplo: ConfiguracaoNicho = {
     },
     {
       id: 'ocupacao',
+      grupo: 'operacao', // [VALIDAR COM A PROFESSORA]
       nome: 'Ocupação de leitos',
       unidade: 'dos leitos ocupados',
       formato: 'percentual',

@@ -3,7 +3,6 @@ import type { Chart } from 'chart.js'
 import { arredondarComoATela, formatar } from '../formatar'
 import type { Indicador, Mes, ResumoIndicador } from '../tipos/dominio'
 import { el, icone } from './dom'
-import { graficoTendencia } from './graficoTendencia'
 import { minigrafico } from './minigrafico'
 import { contarAte } from './numero'
 
@@ -110,7 +109,7 @@ const cabecalho = (resumo: ResumoIndicador) => [
  * Cartão em destaque: número grande, selo, variação, gráfico de 12 meses e "O que é isso?".
  * Devolve também o gráfico, para quem chamou poder destruí-lo ao redesenhar.
  */
-export function cartaoDestaque(resumo: ResumoIndicador, mesAnterior: Mes | null): { elemento: HTMLElement; iniciarGrafico(): Chart | null } {
+export function cartaoDestaque(resumo: ResumoIndicador, mesAnterior: Mes | null): { elemento: HTMLElement; iniciarGrafico(): Promise<Chart | null> } {
   const canvas = el('canvas')
   const area = el('div', { class: 'cartao__grafico' }, temSerie(resumo) ? canvas : el('p', { class: 'sem-dados', texto: 'Dados insuficientes para o gráfico' }))
   const elemento = el(
@@ -121,7 +120,13 @@ export function cartaoDestaque(resumo: ResumoIndicador, mesAnterior: Mes | null)
     oQueE(resumo.indicador),
   )
   // O gráfico lê os tokens do canvas, então só pode começar depois de o cartão entrar na página.
-  return { elemento, iniciarGrafico: () => (temSerie(resumo) ? graficoTendencia(canvas, resumo) : null) }
+  // O Chart.js é carregado sob demanda: quem só usa os cartões compactos (a landing) não o baixa.
+  const iniciarGrafico = async () => {
+    if (!temSerie(resumo)) return null
+    const { graficoTendencia } = await import('./graficoTendencia')
+    return elemento.isConnected ? graficoTendencia(canvas, resumo) : null
+  }
+  return { elemento, iniciarGrafico }
 }
 
 /** Cartão compacto: número, selo ou variação, minigráfico e o botão "Ver tendência". */
