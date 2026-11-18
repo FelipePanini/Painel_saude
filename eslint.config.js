@@ -15,4 +15,9 @@ export default tseslint.config(
       'no-console': 'error',
     },
   },
+  {
+    // Scripts de linha de comando (rodam no Node, nunca no site, e não leem dados de usuário).
+    files: ['scripts/**'],
+    rules: { 'no-console': 'off' },
+  },
 )

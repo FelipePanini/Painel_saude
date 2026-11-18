@@ -25,7 +25,7 @@ function vigiar(page: Page, origem: string) {
 const vidroPronto = (page: Page) => page.waitForFunction(() => document.documentElement.dataset.vidroPronto === 'sim')
 
 test.describe('rede e CSP', () => {
-  for (const caminho of ['/', '/painel/', '/componentes/']) {
+  for (const caminho of ['/', '/painel/', '/componentes/', '/creditos/']) {
     test(`${caminho}: nada sai para fora, CSP sem afrouxar e sem erros`, async ({ page, baseURL }) => {
       const { problemas } = vigiar(page, new URL(baseURL!).origin)
       const resposta = await page.goto(caminho)
@@ -33,7 +33,7 @@ test.describe('rede e CSP', () => {
       expect(csp).toContain("default-src 'self'")
       expect(csp).toContain("connect-src 'self'")
       expect(csp).not.toContain('unsafe')
-      await vidroPronto(page)
+      if (caminho !== '/creditos/') await vidroPronto(page)
       await page.waitForLoadState('networkidle')
       expect(problemas).toEqual([])
     })
@@ -149,6 +149,27 @@ test.describe('seções da landing', () => {
     await expect(page.locator('#grupos .cartao')).toHaveCount(4)
     // O número é o mesmo que o painel mostra para o mês mais recente.
     await expect(page.locator('#grupos .cartao').first().locator('.cartao__valor')).toHaveAttribute('aria-label', /^\d+,\d$/)
+  })
+
+  test('a vitrine mostra as três telas do painel, com texto alternativo que descreve a tela', async ({ page }) => {
+    await page.goto('/')
+    const imagens = page.locator('#telas .moldura img')
+    await expect(imagens).toHaveCount(3)
+    for (const imagem of await imagens.all()) {
+      await imagem.scrollIntoViewIfNeeded()
+      await expect.poll(() => imagem.evaluate((e) => (e as HTMLImageElement).naturalWidth)).toBeGreaterThan(0)
+      const alt = (await imagem.getAttribute('alt')) ?? ''
+      expect(alt).toContain('Painel de exemplo')
+      expect(alt.toLowerCase()).not.toContain('captura')
+    }
+  })
+
+  test('a página de créditos tem uma h1 e volta para a página inicial', async ({ page }) => {
+    await page.goto('/creditos/')
+    await expect(page.locator('h1')).toHaveText('Créditos')
+    await expect(page.getByRole('link', { name: 'Voltar para a página inicial' })).toHaveAttribute('href', '/')
+    await page.goto('/')
+    await expect(page.getByRole('link', { name: 'Créditos' })).toHaveAttribute('href', '/creditos/')
   })
 
   test('a demonstração aumenta o texto e troca o tema só do exemplo', async ({ page }) => {

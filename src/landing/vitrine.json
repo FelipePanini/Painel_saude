@@ -1,0 +1,53 @@
+{
+  "gerado": "2026-11-18",
+  "telas": [
+    {
+      "formato": "computador",
+      "largura": 1280,
+      "altura": 800,
+      "alt": "Painel de exemplo de outubro de 2026: higiene das mãos em 79%, fora da meta (mínimo de 80%), com o gráfico dos últimos 12 meses e os outros indicadores ao lado.",
+      "imagens": {
+        "claro": {
+          "1x": "/vitrine/computador-claro-1x.webp",
+          "2x": "/vitrine/computador-claro-2x.webp"
+        },
+        "escuro": {
+          "1x": "/vitrine/computador-escuro-1x.webp",
+          "2x": "/vitrine/computador-escuro-2x.webp"
+        }
+      }
+    },
+    {
+      "formato": "tablet",
+      "largura": 768,
+      "altura": 1024,
+      "alt": "Painel de exemplo de outubro de 2026: higiene das mãos em 79%, fora da meta (mínimo de 80%), com o gráfico dos últimos 12 meses e os outros indicadores ao lado.",
+      "imagens": {
+        "claro": {
+          "1x": "/vitrine/tablet-claro-1x.webp",
+          "2x": "/vitrine/tablet-claro-2x.webp"
+        },
+        "escuro": {
+          "1x": "/vitrine/tablet-escuro-1x.webp",
+          "2x": "/vitrine/tablet-escuro-2x.webp"
+        }
+      }
+    },
+    {
+      "formato": "celular",
+      "largura": 390,
+      "altura": 844,
+      "alt": "Painel de exemplo de outubro de 2026: higiene das mãos em 79%, fora da meta (mínimo de 80%), com o gráfico dos últimos 12 meses e os outros indicadores ao lado.",
+      "imagens": {
+        "claro": {
+          "1x": "/vitrine/celular-claro-1x.webp",
+          "2x": "/vitrine/celular-claro-2x.webp"
+        },
+        "escuro": {
+          "1x": "/vitrine/celular-escuro-1x.webp",
+          "2x": "/vitrine/celular-escuro-2x.webp"
+        }
+      }
+    }
+  ]
+}

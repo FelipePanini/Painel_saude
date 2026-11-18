@@ -121,5 +121,6 @@ export function criarFonteFicticia(): FonteDeDados {
       ),
     resumo,
     frases,
+    marcador: () => 'ZZ-FICTICIO',
   }
 }

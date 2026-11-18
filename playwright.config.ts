@@ -4,6 +4,9 @@ import { defineConfig, devices } from '@playwright/test'
 export default defineConfig({
   testDir: 'tests/e2e',
   fullyParallel: true,
+  // No máximo 3 abas ao mesmo tempo: cada uma pode ter dois contextos WebGL (o robô e o vidro),
+  // desenhados por software no navegador de teste. Com 5, o navegador chegou a fechar no meio.
+  workers: 3,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 1 : 0,
   reporter: 'list',

@@ -1,0 +1,10 @@
+// Página de créditos (/creditos/). Só texto: nada de 3D, gráfico ou dado.
+import '@fontsource/inter/latin-400.css'
+import '@fontsource/inter/latin-500.css'
+import '@fontsource/inter/latin-600.css'
+import '@fontsource/inter/latin-700.css'
+import './estilos/tokens.css'
+import './estilos/base.css'
+import './estilos/componentes.css'
+import './estilos/landing.css'
+import './tema'

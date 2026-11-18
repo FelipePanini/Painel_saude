@@ -53,6 +53,7 @@ export default defineConfig({
         painel: 'painel/index.html',
         componentes: 'componentes/index.html',
         prototipo: 'prototipo/index.html',
+        creditos: 'creditos/index.html',
       },
     },
   },

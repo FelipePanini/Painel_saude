@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
+    <title>Créditos · Painel Saúde</title>
+    <script src="/tema-inicial.js"></script>
+    <script type="module" src="/src/creditos.ts"></script>
+  </head>
+  <body class="pagina-creditos">
+    <main class="creditos" id="conteudo">
+      <a class="botao botao--texto creditos__voltar" href="/">Voltar para a página inicial</a>
+      <h1 class="creditos__titulo">Créditos</h1>
+      <p class="creditos__frase">O Painel Saúde usa trabalho de outras pessoas, sob licenças abertas. Aqui está quem fez o quê.</p>
+
+      <section aria-labelledby="creditos-3d">
+        <h2 id="creditos-3d">Modelos 3D</h2>
+        <ul>
+          <li><strong>Robô desta versão.</strong> Desenhado para o projeto com formas simples, no código e em SVG. Não vem de terceiros.</li>
+          <li><strong>Cenas do Spline.</strong> Quando entrarem no site, aparecem aqui com título, autor, link e licença (CC BY 4.0), e com o que foi modificado.</li>
+        </ul>
+      </section>
+
+      <section aria-labelledby="creditos-fonte">
+        <h2 id="creditos-fonte">Fonte</h2>
+        <ul>
+          <li><strong>Inter</strong>, de Rasmus Andersson, sob a <a href="https://openfontlicense.org/">SIL Open Font License 1.1</a>. Empacotada pelo <a href="https://fontsource.org/fonts/inter">Fontsource</a> e servida pelo próprio site.</li>
+        </ul>
+      </section>
+
+      <section aria-labelledby="creditos-bibliotecas">
+        <h2 id="creditos-bibliotecas">Bibliotecas</h2>
+        <ul>
+          <li><a href="https://threejs.org/"><strong>Three.js</strong></a>: o robô em 3D. Licença MIT.</li>
+          <li><a href="https://www.chartjs.org/"><strong>Chart.js</strong></a>: os gráficos do painel. Licença MIT.</li>
+          <li><a href="https://liquid-glass.ybouane.com/"><strong>@ybouane/liquidglass</strong></a>: o efeito de vidro da navegação. Licença MIT.</li>
+          <li><a href="https://lucide.dev/"><strong>Lucide</strong></a>: os ícones. Licença ISC.</li>
+          <li><a href="https://github.com/jakearchibald/idb-keyval"><strong>idb-keyval</strong></a>: o armazenamento no navegador. Licença Apache 2.0.</li>
+          <li><a href="https://sheetjs.com/"><strong>SheetJS</strong></a> (edição comunitária): a leitura das planilhas. Licença Apache 2.0.</li>
+        </ul>
+      </section>
+    </main>
+
+    <footer class="rodape-landing">
+      <img class="selo-robo" src="/3d/robo-provisorio.svg" alt="" width="32" height="32" />
+      <p class="rodape-landing__aviso">Ferramenta de gestão. Não faz diagnóstico e não indica conduta.</p>
+    </footer>
+  </body>
+</html>

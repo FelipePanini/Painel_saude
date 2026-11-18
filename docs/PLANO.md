@@ -24,10 +24,10 @@ Briefing: `docs/BRIEFING_LANDING_3D.md`. O 3D usa o Three.js com cenas em GLB, e
 | --- | --- | --- |
 | 1. Base e robô | Landing em `/`, painel em `/painel/`, Three.js instalado, primeira dobra com o robô (provisório, feito no código), pausa, claro e escuro, testes de rede, CSP, sem WebGL, reduzir movimento e pausa | concluída em 18/11 |
 | 2. Roteiro | Seções 2 a 10, blur, movimento por rolagem, componentes reais do painel | concluída em 18/11, menos a vitrine (seção 7), que foi para a fatia 3 |
-| 3. Cenas 2 e 3 e vitrine | Outras cenas, molduras, `npm run vitrine`, página de créditos | não começou |
+| 3. Cenas 2 e 3 e vitrine | Outras cenas, molduras, `npm run vitrine`, página de créditos | concluída em 18/11, menos as cenas 2 e 3, que esperam os arquivos GLB |
 | 4. Acabamento | Orçamento de desempenho, versão sem movimento, capturas finais, revisão, graphify | não começou |
 
-Próximo passo: fatia 3. Vitrine (seção 7) com as molduras e o `npm run vitrine`, página de créditos com o link no rodapé, e as cenas 2 e 3 quando os arquivos GLB chegarem.
+Próximo passo: fatia 4, o acabamento (orçamento de desempenho medido, versão sem movimento revisada, capturas finais, revisão com Apple design e Humanizer, graphify e `docs/ENTREGA_LANDING.md`). As cenas 2 e 3 entram quando os arquivos GLB chegarem, nas seções de privacidade e de vidro.
 
 O que falta do Felipe para a landing:
 
@@ -35,7 +35,8 @@ O que falta do Felipe para a landing:
 - **Nome do robô:** três propostas em DECISOES, marcadas [VALIDAR].
 - **Grupos dos indicadores na landing [VALIDAR COM A PROFESSORA]:** quedas e lesão por pressão em Assistência, higiene das mãos em Qualidade, ocupação de leitos em Operação. O briefing pede dois ou três indicadores por área, mas o nicho de exemplo só tem quatro; não inventei outros.
 - **Inscrição no beta:** como vai ser (e-mail, formulário de terceiro, outro). Tudo que envia dado para fora muda a promessa e a CSP.
-- **Créditos** com os dados reais dos autores das cenas.
+- **Créditos** com os dados reais dos autores das cenas. A página `/creditos/` já existe e tem o lugar reservado.
+- **Imagens da vitrine em AVIF:** pedem uma dependência nova para converter (por exemplo, `sharp`). Hoje a vitrine usa WebP, que o navegador gera sozinho. Aprovar ou não é decisão do Felipe.
 - **Robô próprio antes da pré-venda.** O robô da comunidade tem licença CC BY 4.0: qualquer pessoa pode usar o mesmo modelo, e a licença não dá direito de marca. Serve para o beta; para a pré-venda, vale encomendar ou modificar o robô até ele ser nosso, se a ideia for registrar a marca.
 
 ## Decisões que tomei sem o Felipe (11/11)

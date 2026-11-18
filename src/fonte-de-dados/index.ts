@@ -16,6 +16,11 @@ export interface FonteDeDados {
   resumo(filtros: Filtros): Promise<ResumoIndicador[]>
   /** Até 3 frases em linguagem simples sobre o que mudou. */
   frases(filtros: Filtros): Promise<string[]>
+  /**
+   * "ZZ-FICTICIO" quando os dados carregados são fictícios. O script da vitrine só tira
+   * capturas quando vê esse marcador, para nenhuma imagem pública mostrar dado real.
+   */
+  marcador(): string | null
 }
 
 export const fonteDeDados: FonteDeDados = criarFonteFicticia()

@@ -5,9 +5,11 @@ import { segmentado } from '../componentes/controles'
 import { el } from '../componentes/dom'
 import { cartaoCompacto } from '../componentes/indicador'
 import { minigrafico } from '../componentes/minigrafico'
+import { molduraDeTela, type ImagemDeTela } from '../componentes/molduraDeTela'
 import { fonteDeDados } from '../fonte-de-dados'
 import { capitalizar, formatar } from '../formatar'
 import type { Filtros, Grupo, ResumoIndicador } from '../tipos/dominio'
+import vitrine from './vitrine.json'
 
 const nomesDosGrupos: Record<Grupo, string> = {
   assistencia: 'Assistência',
@@ -166,7 +168,22 @@ function montarDemo(resumos: ResumoIndicador[], mesAnterior: string | null) {
   document.getElementById('demo')!.replaceChildren(controles, vitrine)
 }
 
+// ---------- vitrine ----------
+
+/** As telas do painel, geradas pelo `npm run vitrine`. Sem elas, só um aviso no modo de desenvolvimento. */
+function montarVitrine() {
+  const caixa = document.getElementById('telas')!
+  const telas = vitrine.telas as ImagemDeTela[]
+  if (!telas.length) {
+    if (import.meta.env.DEV) caixa.append(el('p', { class: 'vitrine__aviso', texto: 'Imagem do painel em breve. Rode npm run vitrine.' }))
+    else document.getElementById('vitrine')!.hidden = true
+    return
+  }
+  caixa.replaceChildren(...telas.map((t) => molduraDeTela(t)))
+}
+
 export async function montarSecoes() {
+  montarVitrine()
   const dados = await dadosDoMes()
   montarPalco(dados)
   acompanharPassos()

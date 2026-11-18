@@ -56,5 +56,8 @@ aoMudarTema(() => {
 })
 
 await visao.desenhar(filtros)
+// O script da vitrine confere este marcador antes de capturar a tela.
+const marcador = fonteDeDados.marcador()
+if (marcador) document.documentElement.dataset.marcadorDeDados = marcador
 await navegacao.aplicarVidro('vidro')
 document.documentElement.dataset.vidroPronto = 'sim'

@@ -2,6 +2,19 @@
 
 Decisões não óbvias, com data. A mais recente fica no topo.
 
+## 18/11/2026: landing page 3D, fatia 3 (vitrine e créditos)
+
+- **Vitrine com as telas reais do painel.** O `npm run vitrine` faz o build, sobe o `vite preview`, abre o `/painel/` em computador (1280 px), tablet (768 px) e celular (390 px), nos dois temas, em 2x, e salva as imagens em `public/vitrine/`. A lista com o texto alternativo vai para `src/landing/vitrine.json`, e o build roda de novo no fim para levar as imagens novas.
+- **Só dados fictícios nas capturas.** A fonte de dados ganhou o método `marcador()`, que a fictícia responde com `ZZ-FICTICIO`. O painel põe o marcador na página, e o script para com erro, sem salvar nada, se não encontrar.
+- **WebP, sem AVIF.** O próprio navegador converte as capturas para WebP (canvas), em 1x e 2x. Gerar AVIF pede uma dependência nova (como o `sharp`), que precisa de aprovação; ficou como pendência no PLANO. As 12 imagens somam cerca de 600 KB e só baixam quando a vitrine chega perto da tela (`loading="lazy"`).
+- **Texto alternativo a partir da tela**, montado pelo script com o que o painel mostra (mês, indicador em destaque, valor e meta), e não "captura de tela".
+- **Moldura de tela** (`src/componentes/molduraDeTela.ts`): cantos arredondados, borda fina e a sombra dos tokens, sem imitar aparelho nenhum. A imagem escura entra pelo `<picture>` com `prefers-color-scheme: dark`. `width` e `height` reservam o espaço da imagem. No computador, as três telas ficam sobrepostas; no celular, a grande em cima e as duas menores lado a lado.
+- **Sem capturas, a vitrine some no build** e mostra um aviso "Imagem do painel em breve" só no modo de desenvolvimento.
+- **Página de créditos** em `/creditos/`, com o link no rodapé da landing: o robô provisório (próprio), o lugar das cenas do Spline (CC BY 4.0, quando chegarem), a fonte Inter (OFL 1.1) e as bibliotecas com a licença de cada uma, conferida no `package.json` de cada pacote. Ela só tem texto e não carrega 3D, gráfico nem dado.
+- **Cenas 2 e 3 não entraram:** os arquivos GLB ainda não existem. As seções de privacidade e de vidro já têm o lugar delas (fundo desfocado e a ilustração da barra).
+- **O Playwright roda no máximo 3 abas ao mesmo tempo.** Com 5, o navegador de teste fechou no meio de uma rodada: cada aba pode ter dois contextos WebGL desenhados por software. Com 3, a rodada inteira leva cerca de 20 s.
+- **Regra do ESLint para `scripts/`:** os scripts de linha de comando podem usar `console`, porque rodam no Node e não leem dados de usuário. No site, `no-console` continua valendo.
+
 ## 18/11/2026: landing page 3D, fatia 2 (roteiro)
 
 - **Seções feitas:** da planilha ao painel (palco preso na tela), os indicadores por área, privacidade, feito para todo mundo, vidro só onde ajuda, para quem é, chamada final e rodapé. Os textos estão no HTML; os números vêm da fonte de dados.
